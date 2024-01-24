@@ -1,0 +1,136 @@
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.detail {
+    &-sub {
+        span {
+            font-size: 15px;
+
+            &:last-child {
+                color: dimgray;
+            }
+        }
+    }
+
+    p {
+        margin-bottom: 10px;
+    }
+
+    &-content {
+        font-size: 16px;
+
+        &__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        &__title {
+            font-size: 25px;
+        }
+
+
+
+        &__more {
+
+            span {
+                color: #800020;
+            }
+        }
+
+        &__price {
+            font-size: 25px;
+            color: dimgray;
+        }
+
+        &__box {
+            font-weight: 600;
+
+            span {
+                font-weight: normal;
+            }
+        }
+
+        &__form {
+            position: relative;
+            border: 1px solid #aaa;
+            padding: 25px 20px;
+            margin: 25px 0 20px;
+
+            .form-title {
+                position: absolute;
+                left: 15px;
+                top: -18px;
+                background-color: #fff;
+                font-weight: 600;
+                z-index: 1;
+                padding: 2px 6px;
+                font-size: 18px;
+            }
+
+            .form-group {
+                @extend .center;
+                gap: 10px;
+                justify-content: flex-start;
+
+                label {
+                    width: 30%;
+                }
+
+                input {
+                    flex: 1;
+                    padding: 4px 10px;
+                    border-radius: 2px;
+                    overflow: hidden;
+                    border: 1px solid #aaa;
+
+                    &:focus-visible {
+                        outline: none;
+                    }
+
+                    &:read-only {
+                        background-color: #fafafa;
+                    }
+                }
+            }
+
+            .form-btn {
+                padding: 5px 20px;
+                border-radius: 5px;
+                overflow: hidden;
+                border: 1px solid #000;
+                background-color: #000;
+                color: #fff;
+                transition: 0.3s;
+
+                &:hover {
+                    background-color: transparent;
+                    color: #000;
+                }
+            }
+        }
+
+        &__commit {
+            margin: 0;
+            padding-left: 0;
+            padding-top: 20px;
+
+            li:first-child {
+                text-transform: uppercase;
+            }
+
+            li:not(li:first-child) {
+                color: dimgray;
+            }
+        }
+    }
+}

@@ -1,0 +1,123 @@
+.start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.home-nav {
+    position: relative;
+    height: calc(100vh - 62px - 44px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 20px 0;
+
+    .title {
+        @extend .start;
+        justify-content: space-between;
+        font-weight: 600;
+        font-size: 20px;
+        cursor: pointer;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 8px;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+
+        span:last-child {
+            @extend .start;
+            justify-content: center;
+            --size: 30px;
+            width: var(--size);
+            height: var(--size);
+            font-size: 14px;
+            background-color: #f1f1f1;
+            border-radius: 50%;
+            color: #333;
+        }
+    }
+
+    .list {
+        padding-left: 10px;
+
+        &-item {
+
+            &__link {
+                @extend .start;
+                gap: 5px;
+                color: #71829b;
+                text-decoration: none;
+                padding: 4px 0;
+            }
+        }
+    }
+}
+
+.home {
+    position: relative;
+    height: calc(100vh - 62px - 44px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 20px 0;
+
+    &-form {
+        .home-search {
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #000;
+            border-radius: 5px;
+            overflow: hidden;
+
+            input {
+                border: none;
+                flex: 1;
+                padding: 6px 10px;
+                font-size: 16px;
+
+                &:focus-visible {
+                    outline: none;
+                }
+            }
+
+            button {
+                padding: 6px 20px;
+                border: none;
+            }
+        }
+
+        &__group {
+            @extend .start;
+            gap: 20px;
+            padding-top: 10px;
+
+            .home-check {
+                @extend .start;
+                gap: 6px;
+
+                label {
+                    cursor: pointer;
+                    color: #71829b;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    .filter {
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+
+        &__btn {
+            background-color: transparent;
+            border: none;
+            font-size: inherit;
+        }
+
+        &__select {
+            font-size: inherit;
+            background-color: transparent;
+            border: 1px solid #000;
+            padding: 0 6px;
+            border-radius: 2px;
+        }
+    }
+}

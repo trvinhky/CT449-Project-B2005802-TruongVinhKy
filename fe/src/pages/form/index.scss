@@ -1,0 +1,89 @@
+.form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #000;
+    border-radius: 5px;
+    min-width: 400px;
+    padding: 20px;
+
+    &-title {
+        text-align: center;
+        font-size: 35px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    &-content {
+        &__group {
+            label {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            input {
+                margin-bottom: 15px;
+                width: 100%;
+                padding: 4px 10px;
+                border: 1px solid #000;
+                border-radius: 2px;
+
+                &:focus,
+                &:focus-visible {
+                    outline: none;
+                }
+            }
+        }
+
+        &__btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 5px;
+            padding-top: 10px;
+
+            button {
+                padding: 8px 25px;
+                border-radius: 5px;
+                border: 1px solid #000;
+                color: #000;
+                cursor: pointer;
+                transition: 0.3s;
+                background-color: transparent;
+
+                &:hover {
+                    background-color: #000;
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    &-link {
+        text-decoration: none;
+        color: #3498db;
+    }
+
+    &-password {
+        display: flex;
+        width: 100%;
+        border: 1px solid #000;
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 15px;
+
+        input {
+            width: unset;
+            border: none;
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        &__btn {
+            display: block;
+            padding: 4px 10px;
+            cursor: pointer;
+        }
+    }
+}
