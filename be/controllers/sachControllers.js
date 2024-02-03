@@ -117,8 +117,8 @@ const sachControllers = {
     }),
     // lay tat ca sach
     getAll: asyncHandler(async (req, res) => {
-        const { page } = req.query
-        const LENGTH = 6
+        const { page, limit } = req.query
+        const LENGTH = limit ? parseInt(limit) : 6
         let star = 0
         if (!isNaN(parseInt(page)) && parseInt(page) > 0) {
             star = (LENGTH * page) - LENGTH

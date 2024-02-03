@@ -124,7 +124,7 @@ export default {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="admin-form">
+                        <form class="admin-form" @submit.prevent="handleSubmit">
                             <div class="admin-form__group mb-4">
                                 <label for="name">Tên nhà xuất bản</label>
                                 <input type="text" id="name" v-model="TENNXB">

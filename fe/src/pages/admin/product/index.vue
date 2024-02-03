@@ -12,7 +12,7 @@ export default {
         const store = useStore()
         const route = useRoute()
         const MASACH = ref(null)
-        const page = ref(route.query.page || 1)
+        const page = ref(parseInt(route.query.page) || 1)
         const count = ref(0)
         const data = ref([])
         const nxb = ref([])
@@ -65,6 +65,11 @@ export default {
             await getData()
         })
 
+        watch(() => route.query.page, async () => {
+            page.value = parseInt(route.query.page)
+            await getData()
+        })
+
         const handleClick = async (id) => {
             const info = await getInfo(id)
             if (info) {
@@ -83,15 +88,6 @@ export default {
                 }
             }
         }
-
-        const handleChangePage = async (pageNumber) => {
-            page.value = pageNumber
-            await getData()
-        }
-
-        watch(() => page.value, async () => {
-            await getData()
-        })
 
         const handleEditBook = async () => {
             const donGia = +(DONGIA.value.replace('.', ''))
@@ -134,8 +130,7 @@ export default {
             NAMXUATBAN,
             TENNXB,
             TENHA,
-            handleEditBook,
-            handleChangePage
+            handleEditBook
         }
     },
     components: {
@@ -184,7 +179,11 @@ export default {
         </div>
         <div class="admin-dots" v-if="count">
             <ul class="admin-dots__list">
-                <li v-for="i in count" :class="{ 'active': page === i }" @click="handleChangePage(i)">{{ i }}</li>
+                <li v-for="i in count" :class="{ 'active': page === i }">
+                    <router-link :to="`/admin/products?page=${i}`">
+                        {{ i }}
+                    </router-link>
+                </li>
             </ul>
         </div>
         <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewLabel" aria-hidden="true">
@@ -226,7 +225,7 @@ export default {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="admin-form">
+                        <form class="admin-form" @submit.prevent="handleEditBook">
                             <div class="admin-form__group mb-4">
                                 <label for="name">Tên sản phẩm</label>
                                 <input type="text" id="name" v-model="TENSACH">

@@ -1,24 +1,44 @@
 <script>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, watch } from "vue"
 import { Carousel, Slide } from 'vue3-carousel'
 import Card from '~/components/Card.vue'
-import Group from "~/components/Group.vue"
 import Title from "~/components/Title.vue"
+import { useStore } from "vuex"
 import { useRoute } from "vue-router"
+import { computed } from "@vue/reactivity";
 
 export default {
     setup() {
+        const store = useStore()
         const route = useRoute()
         const title = ref(null)
         const currentDate = ref(null)
         const MSB = ref(route.query.MSB)
+        const data = ref(null)
 
-        onMounted(() => {
-            title.value = 'Thám Tử Lừng Danh Conan - Tập 102'
+        const getData = async () => {
+            try {
+                await store.dispatch('sach/GetInformation', { MASACH: MSB.value })
+                const res = computed(() => store.state.sach.chiTiet)
+                data.value = await res.value
+                if (data.value) {
+                    title.value = data.value.TENSACH
+                    console.log(data.value)
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
 
+        onMounted(async () => {
+            await getData()
             document.title = title.value
-
             currentDate.value = getDate()
+        })
+
+        watch(() => route.query.MSB, async () => {
+            MSB.value = route.query.MSB
+            await getData()
         })
 
         const getDate = () => {
@@ -35,6 +55,7 @@ export default {
 
         return {
             title,
+            data,
             currentDate
         }
     },
@@ -42,7 +63,6 @@ export default {
         Carousel,
         Slide,
         Card,
-        Group,
         Title
     },
     data: () => ({
@@ -57,51 +77,53 @@ export default {
 </script>
 
 <template>
-    <section class="detail pt-3 pb-2">
-        <Title :title="title" sup="Tân Việt" />
+    <section class="detail pt-3 pb-2" v-if="data">
+        <Title :title="title" :sup="data.MANXB?.TENNXB" v-if="title" />
         <div class="detail-content mt-4">
             <div class="row">
-                <div class="col-5">
+                <div class="col-5" v-if="data.hinhAnh">
                     <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
-                        <Slide v-for="slide in 10" :key="slide">
+                        <Slide v-for="slide in data.hinhAnh" :key="slide">
                             <div class="carousel__item">
-                                <img src="../../assets/images/products/gio-profumo.jpg" alt="" class="detail-content__img">
+                                <img :src="`/src/assets/images/books/${slide?.TENHA}`" :alt="slide?.MAHA"
+                                    class="detail-content__img">
                             </div>
                         </Slide>
                     </Carousel>
 
-                    <Carousel id="thumbnails" :items-to-show="4" snap-align="center" v-model="currentSlide" ref="carousel">
-                        <Slide v-for="slide in 10" :key="slide">
+                    <Carousel id="thumbnails" :items-to-show="4" snap-align="start" v-model="currentSlide" ref="carousel">
+                        <Slide v-for="slide in data.hinhAnh" :key="slide">
                             <div class="carousel__item" @click="slideTo(slide - 1)" style="margin: 0 5px;">
-                                <img src="../../assets/images/products/gio-profumo.jpg" alt="" class="detail-content__img">
+                                <img :src="`/src/assets/images/books/${slide?.TENHA}`" :alt="slide?.MAHA"
+                                    class="detail-content__img">
                             </div>
                         </Slide>
                     </Carousel>
                 </div>
                 <div class="col-7">
                     <h3 class="detail-content__title">
-                        Thám Tử Lừng Danh Conan - Tập 102
+                        {{ title }}
                     </h3>
                     <div class="row">
                         <div class="col-6">
                             <p class="detail-content__more">
-                                Nhà xuất bản: <span>Kim Đồng</span>
+                                Nhà xuất bản: <span>{{ data.MANXB?.TENNXB }}</span>
                             </p>
                         </div>
                         <div class="col-6">
                             <p class="detail-content__more">
-                                Tác giả: <span>Gosho Aoyama</span>
+                                Tác giả: <span>{{ data.TACGIA }}</span>
                             </p>
                         </div>
                     </div>
                     <p class="detail-content__price">
-                        1.850.000₫
+                        {{ data.DONGIA.toLocaleString('vi-VN') }}₫
                     </p>
                     <p class="detail-content__box">
-                        Số lượng: <span>100</span>
+                        Số lượng: <span>{{ data.SOQUYEN }}</span>
                     </p>
                     <p class="detail-content__box">
-                        Năm xuất bản: <span>2023</span>
+                        Năm xuất bản: <span>{{ data.NAMXUATBAN }}</span>
                     </p>
                     <form class="detail-content__form">
                         <span class="form-title">
@@ -146,7 +168,6 @@ export default {
                 </div>
             </div>
         </div>
-        <Group title="Sản phẩm liên quan" path="/products/related/1" />
     </section>
 </template>
 

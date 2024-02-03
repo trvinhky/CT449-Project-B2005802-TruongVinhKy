@@ -1,18 +1,25 @@
 <script>
-
+export default {
+    props: {
+        data: {
+            type: Object,
+            required: true
+        }
+    }
+}
 </script>
 
 <template>
-    <div class="card" style="width: 100%;">
-        <img src="../assets/images/products/mt-34.webp" class="card-img-top" alt="...">
+    <div class="card" style="width: 100%;" v-if="data">
+        <img :src="`/src/assets/images/books/${data?.hinhAnh[0]?.TENHA}`" class="card-img-top" :alt="data.TENSACH">
         <div class="card-body">
             <h5 class="card-title">
-                <router-link to="/detail?MSB=kjnnjjj" class="card-link">
-                    Chiết 10ml Giorgio Armani Acqua di Gio Profumo
+                <router-link :to="`/detail?MSB=${data.MASACH}`" class="card-link">
+                    {{ data.TENSACH }}
                 </router-link>
             </h5>
             <p class="card-text">
-                <span>Số lượng: </span>100
+                <span>Số quyển: </span>{{ data.SOQUYEN }}
             </p>
         </div>
     </div>

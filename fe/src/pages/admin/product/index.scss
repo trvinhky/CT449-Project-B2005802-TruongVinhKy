@@ -62,22 +62,29 @@
             gap: 10px;
 
             li {
-                @extend .center;
-                --size: 40px;
-                width: var(--size);
-                height: var(--size);
-                border-radius: 5px;
-                font-size: 16px;
-                font-weight: 600;
-                color: #000;
-                border: 1px solid currentColor;
-                transition: 0.3s;
-                overflow: hidden;
-                cursor: pointer;
+                a {
+                    @extend .center;
+                    --size: 40px;
+                    width: var(--size);
+                    height: var(--size);
+                    border-radius: 5px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #000;
+                    border: 1px solid currentColor;
+                    transition: 0.3s;
+                    overflow: hidden;
+                    text-decoration: none;
+                }
+
+                a:hover {
+                    color: #fff;
+                    background-color: #000;
+                    border-color: #000;
+                }
             }
 
-            li.active,
-            li:hover {
+            .active a {
                 color: #fff;
                 background-color: #000;
                 border-color: #000;

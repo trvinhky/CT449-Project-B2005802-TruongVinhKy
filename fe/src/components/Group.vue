@@ -24,6 +24,10 @@ export default {
         path: {
             type: String,
             required: true,
+        },
+        data: {
+            type: Array,
+            required: true
         }
     }
 }
@@ -39,9 +43,9 @@ export default {
         </router-link>
     </div>
     <Carousel v-bind="settings" class="w-100">
-        <Slide v-for="slide in 10" :key="slide">
+        <Slide v-if="data" v-for="slide in data" :key="slide">
             <div class="carousel__item" style="margin: 0 10px;">
-                <Card />
+                <Card :data="slide" />
             </div>
         </Slide>
 

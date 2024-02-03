@@ -71,6 +71,7 @@ export default {
                 await createHinhAnh()
             }
 
+            TENHA.value = ''
             await getData()
         }
 
@@ -152,7 +153,7 @@ export default {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="admin-form">
+                        <form class="admin-form" @submit.prevent="handleSubmit">
                             <div class="admin-form__group">
                                 <label for="name">Tên hình ảnh</label>
                                 <input type="text" id="name" required v-model="TENHA">

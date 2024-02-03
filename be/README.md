@@ -32,8 +32,9 @@
 # sach
 - POST api/v1/sach -> them moi sach
 - PUT api/v1/sach/abc -> cap nhat thong tin sach co MASACH = abc
-- GET api/v1/sach/all?page=1 -> lay tat ca sach theo trang (moi trang co 6 phan tu)
+- GET api/v1/sach/all?page=1&limit=6 -> lay tat ca sach theo trang (moi trang co 6 phan tu)
     + page: int -> co the co hoac khong (page > 0)
+    + limit: int -> co the co hoac khong (page > 0)
 - GET api/v1/sach/detail?MASACH=abc -> lay thong tin sach co MASACH = abc
     + MASACH: String
 - GET api/v1/sach/count -> lay thong so luong sach

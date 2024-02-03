@@ -38,9 +38,9 @@ const getters = {
 
 // actions
 const actions = {
-    async getAll({ commit }, { page = 1 }) {
+    async getAll({ commit }, { page = 1, limit = 6 }) {
         try {
-            const { data } = await sachAPI.getAll(page)
+            const { data } = await sachAPI.getAll(page, limit)
             commit("setTatCaSach", getHinhAnh(data));
         }
         catch (err) {

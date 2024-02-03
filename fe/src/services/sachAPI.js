@@ -4,11 +4,15 @@ const getURL = (url = '') => `/sach/${url}`;
 
 export const sachAPI = {
     create: async (data) => await axiosClient.post(getURL(), data),
-    getAll: async (page = null) => {
+    getAll: async (page = null, limit = null) => {
         let url = getURL('all')
 
         if (page) {
             url += `?page=${page}`
+        }
+
+        if (limit) {
+            url += `&limit=${limit}`
         }
 
         return await axiosClient.get(url)
