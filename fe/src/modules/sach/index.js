@@ -5,7 +5,9 @@ import { hinhAnhAPI } from "~/services/hinhAnhAPI";
 const state = () => ({
     tatCaSach: [],
     timKiem: [],
-    chiTiet: null
+    chiTiet: null,
+    random: [],
+    sachByNXB: []
 });
 
 const getHinhAnh = async (data) => {
@@ -47,7 +49,7 @@ const actions = {
             console.log(err.message)
         }
     },
-    async Search({ commit }, { type, key, page = 1 }) {
+    async search({ commit }, { type, key, page = 1 }) {
         try {
             const { data } = await sachAPI.search(type, key, page)
 
@@ -57,7 +59,7 @@ const actions = {
             console.log(err.message)
         }
     },
-    async GetInformation({ commit }, { MASACH }) {
+    async getInformation({ commit }, { MASACH }) {
         try {
             const { data } = await sachAPI.getOne(MASACH)
             if (data) {
@@ -72,7 +74,25 @@ const actions = {
         catch (err) {
             console.log(err.message)
         }
-    }
+    },
+    async getRandom({ commit }) {
+        try {
+            const { data } = await sachAPI.getRandom()
+            commit("setRandom", getHinhAnh(data));
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    },
+    async getAllByNXB({ commit }, { MANXB, page = 1, limit = 6 }) {
+        try {
+            const { data } = await sachAPI.getAllByMANXB(MANXB, page, limit)
+            commit("setSachByNXB", getHinhAnh(data));
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    },
 };
 
 // mutations
@@ -85,6 +105,12 @@ const mutations = {
     },
     setChiTiet(state, payload) {
         state.chiTiet = payload;
+    },
+    setSachByNXB(state, payload) {
+        state.sachByNXB = payload;
+    },
+    setRandom(state, payload) {
+        state.random = payload
     }
 }
 export default {

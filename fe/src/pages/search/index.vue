@@ -1,23 +1,62 @@
 <script>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, watch } from "vue"
 import Card from '~/components/Card.vue'
 import { useRoute } from "vue-router"
+import { useStore } from "vuex"
+import { computed } from "@vue/reactivity";
+import router from "~/router";
 
 export default {
     setup() {
         const route = useRoute()
+        const store = useStore()
         const title = ref(route.query.key)
+        const type = ref(route.query.type)
         const address = ref('')
-        const option = ref(null)
+        const option = ref('name')
+        const data = ref([])
+        const search = ref()
 
-        onMounted(() => {
-            document.title = title.value
+        const getData = async () => {
+            try {
+                if (type.value === 'name' || type.value === 'author') {
+                    await store.dispatch('sach/search', { type: type.value, key: title.value })
+                    const res = computed(() => store.state.sach.timKiem)
+                    data.value = await res.value
+                }
+                document.title = `Từ khóa: ${title.value}`
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        onMounted(async () => {
+            await getData()
         })
+
+        watch(() => route.query.key, async () => {
+            title.value = route.query.key
+            await getData()
+        })
+
+        watch(() => route.query.type, async () => {
+            type.value = route.query.type
+            await getData()
+        })
+
+        const handleSearch = async () => {
+            if (router) {
+                router.push(`/search?key=${search.value}&type=${option.value}`);
+            }
+        }
 
         return {
             title,
             address,
-            option
+            option,
+            data,
+            search,
+            handleSearch
         }
     },
     components: {
@@ -29,62 +68,27 @@ export default {
 
 <template>
     <section class="row">
-        <nav class="col-2">
-            <div class="home-nav">
-                <h4 class="title" data-bs-toggle="collapse" data-bs-target="#author" aria-expanded="false"
-                    aria-controls="author">
-                    <span>Tác giả</span>
-                    <span>10</span>
-                </h4>
-                <div class="collapse" id="author">
-                    <ul class="list">
-                        <li class="list-item">
-                            <router-link to="/" class="list-item__link">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>Truyện tranh</span>
-                            </router-link>
-                        </li>
-                    </ul>
-                </div>
-                <h4 class="title" data-bs-toggle="collapse" data-bs-target="#src" aria-expanded="false" aria-controls="src">
-                    <span>Nhà xuất bản</span>
-                    <span>10</span>
-                </h4>
-                <div class="collapse" id="src">
-                    <ul class="list">
-                        <li class="list-item">
-                            <router-link to="/" class="list-item__link">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>Truyện tranh</span>
-                            </router-link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="col-10">
+        <div class="col-12">
             <div class="home">
                 <div class="row home-top">
                     <div class="col-7">
-                        <form action="" class="home-form" method="get">
+                        <form class="home-form" method="get" @submit.prevent="handleSearch">
                             <div class="home-search">
-                                <input type="search" name="search" placeholder="Nhập từ khóa tìm kiếm..." />
+                                <input type="search" name="search" placeholder="Nhập từ khóa tìm kiếm..."
+                                    v-model="search" />
                                 <button type="submit">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </button>
                             </div>
                             <div class="home-form__group">
                                 <div class="home-check">
-                                    <input type="radio" name="search_type" id="name_book" checked>
+                                    <input type="radio" name="search_type" id="name_book" checked value="name"
+                                        v-model="option">
                                     <label for="name_book">Tên sách</label>
                                 </div>
                                 <div class="home-check">
-                                    <input type="radio" name="search_type" id="author_book">
+                                    <input type="radio" name="search_type" id="author_book" value="author" v-model="option">
                                     <label for="author_book">Tác giả</label>
-                                </div>
-                                <div class="home-check">
-                                    <input type="radio" name="search_type" id="src_book">
-                                    <label for="src_book">NXB</label>
                                 </div>
                             </div>
                         </form>
@@ -101,9 +105,16 @@ export default {
                         </form>
                     </div>
                     <div class="col-12">
-                        <div class="row">
-                            <div class="col-3">
-                                <Card />
+                        <div class="row pt-3" v-if="data">
+                            <div class="col-3" v-for="item in data" :key="item._id">
+                                <Card :data="item" />
+                            </div>
+                        </div>
+                        <div class="row" v-if="!data">
+                            <div class="col-12">
+                                <p class="pt-4 text-center">
+                                    Không tìm thấy.
+                                </p>
                             </div>
                         </div>
                     </div>

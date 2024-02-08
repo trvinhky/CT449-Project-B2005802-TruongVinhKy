@@ -14,7 +14,7 @@ export default {
 
     const handleSearch = async () => {
       if (router) {
-        router.push(`/search?key=${search.value}`);
+        router.push(`/search?key=${search.value}&type=name`);
       }
     }
 
@@ -93,8 +93,8 @@ export default {
                 <router-link to="/" class="list__item">
                   <i class="fa-solid fa-house"></i>Trang chủ
                 </router-link>
-                <router-link v-if="nxb" v-for="(el, i) in nxb" :key="el._id"
-                  :to="`/books?name=${el.TENNXB}&MANXB=${el.MANXB}&page=0`" class="list__item">
+                <router-link v-if="nxb" v-for="(el, i) in nxb" :key="el._id" :to="`/authors?nxb=${el.MANXB}`"
+                  class="list__item">
                   <i class="fa-solid fa-bookmark"></i> {{ el.TENNXB }}
                 </router-link>
               </nav>

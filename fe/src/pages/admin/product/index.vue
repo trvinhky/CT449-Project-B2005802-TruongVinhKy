@@ -39,7 +39,7 @@ export default {
 
         const getInfo = async (id) => {
             try {
-                await store.dispatch('sach/GetInformation', { MASACH: id })
+                await store.dispatch('sach/getInformation', { MASACH: id })
                 const res = computed(() => store.state.sach.chiTiet)
                 return await res.value
 

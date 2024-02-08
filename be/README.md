@@ -27,6 +27,7 @@
 # nha xuat ban
 - POST api/v1/nhaXuatBan -> them moi nha xuat ban
 - PUT api/v1/nhaXuatBan/abc -> chinh sua nha xuat ban co MANXB = abc
+- GET api/v1/nhaXuatBan/info?MANXB=abc -> lay thong tin nha xuat ban co MANXB = abc
 - GET api/v1/nhaXuatBan/all -> lay tat ca thong tin nha xuat ban
 
 # sach
@@ -42,6 +43,11 @@
     + name: String -> loai tim kiem, nhan vao 2 gia tri name va author
     + key: String -> tu khoa tim kiem
     + page: int -> co the co hoac khong (page > 0)
+- GET api/v1/sach/allBy?MANXB=abc&page=1&limit=6 -> lay tat ca sach theo MANXB duoc phan trang (moi trang co 6 phan tu)
+    + MANXB: String -> bat buoc phai co
+    + page: int -> co the co hoac khong (page > 0)
+    + limit: int -> co the co hoac khong (page > 0) 
+- GET api/v1/sach/random -> lay ngau nhien 8 quyen sach
 
 # theo doi muon sach
 - POST api/v1/theoDoiMuonSach -> them moi TDMS

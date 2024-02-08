@@ -39,38 +39,4 @@
             font-weight: 600;
         }
     }
-
-    &-list {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        display: flex;
-        gap: 5px;
-
-        li {
-            a {
-                @extend .center;
-                --size: 35px;
-                width: var(--size);
-                height: var(--size);
-                border-radius: 50%;
-                border: 1px solid #000;
-                transition: 0.3s;
-                text-decoration: none;
-                font-size: 15px;
-                color: #000;
-
-                &:hover {
-                    background-color: #000;
-                    color: #fff;
-                }
-            }
-
-        }
-
-        li.active a {
-            background-color: #000;
-            color: #fff;
-        }
-    }
 }

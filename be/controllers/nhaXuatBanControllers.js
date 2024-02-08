@@ -126,6 +126,42 @@ const nhaXuatBanControllers = {
                 error: e.message
             })
         }
+    }),
+    // lay tat thong tin nha xuat ban
+    getOne: asyncHandler(async (req, res) => {
+        const { MANXB } = req.query
+
+        // kiem tra ma nha xuat ban
+        if (!MANXB) {
+            return res.status(400).json({
+                errorCode: 1,
+                message: "Không tồn tại mã nhà xuất bản!"
+            });
+        }
+
+        try {
+            // lay tat thong tin nha xuat ban
+            const nhaXuatBan = await nhaXuatBanModel.findOne({ MANXB })
+
+            if (nhaXuatBan) {
+                return res.status(201).json({
+                    message: "Lấy thông tin nhà xuất bản thành công!",
+                    data: nhaXuatBan,
+                    errorCode: 0
+                })
+            } else {
+                return res.status(404).json({
+                    message: "Lấy thông tin nhà xuất bản thất bại!",
+                    errorCode: 2
+                })
+            }
+        } catch (e) {
+            return res.status(500).json({
+                message: "Lỗi server!",
+                errorCode: 3,
+                error: e.message
+            })
+        }
     })
 }
 

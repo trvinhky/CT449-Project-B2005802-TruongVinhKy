@@ -18,7 +18,7 @@ export default {
 
         const getData = async () => {
             try {
-                await store.dispatch('sach/GetInformation', { MASACH: MSB.value })
+                await store.dispatch('sach/getInformation', { MASACH: MSB.value })
                 const res = computed(() => store.state.sach.chiTiet)
                 data.value = await res.value
                 if (data.value) {

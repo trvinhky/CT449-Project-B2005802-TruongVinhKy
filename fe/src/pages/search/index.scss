@@ -4,53 +4,6 @@
     justify-content: flex-start;
 }
 
-.home-nav {
-    position: relative;
-    height: calc(100vh - 62px - 44px);
-    overflow-x: hidden;
-    overflow-y: scroll;
-    padding: 20px 0;
-
-    .title {
-        @extend .start;
-        justify-content: space-between;
-        font-weight: 600;
-        font-size: 20px;
-        cursor: pointer;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 8px;
-        margin-bottom: 10px;
-        letter-spacing: 1px;
-
-        span:last-child {
-            @extend .start;
-            justify-content: center;
-            --size: 30px;
-            width: var(--size);
-            height: var(--size);
-            font-size: 14px;
-            background-color: #f1f1f1;
-            border-radius: 50%;
-            color: #333;
-        }
-    }
-
-    .list {
-        padding-left: 10px;
-
-        &-item {
-
-            &__link {
-                @extend .start;
-                gap: 5px;
-                color: #71829b;
-                text-decoration: none;
-                padding: 4px 0;
-            }
-        }
-    }
-}
-
 .home {
     position: relative;
     height: calc(100vh - 62px - 44px);

@@ -29,4 +29,18 @@ export const sachAPI = {
 
         return await axiosClient.get(url)
     },
+    getAllByMANXB: async (MANXB, page = null, limit = null) => {
+        let url = getURL(`allBy?MANXB=${MANXB}`)
+
+        if (page) {
+            url += `&page=${page}`
+        }
+
+        if (limit) {
+            url += `&limit=${limit}`
+        }
+
+        return await axiosClient.get(url)
+    },
+    getRandom: async () => await axiosClient.get(getURL('random')),
 };

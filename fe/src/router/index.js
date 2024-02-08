@@ -5,6 +5,7 @@ import AdminLayout from '~/layouts/AdminLayout.vue';
 import Home from '~/pages/home/index.vue'
 import User from '~/pages/user/index.vue'
 import Products from '~/pages/products/index.vue'
+import Producers from '~/pages/producers/index.vue'
 import Search from '~/pages/search/index.vue'
 import Detail from '~/pages/detail/index.vue'
 import DetailBill from '~/pages/bill/index.vue'
@@ -61,6 +62,11 @@ const routes = [
         path: "books",
         name: "books",
         component: Products
+      },
+      {
+        path: "authors",
+        name: "authors",
+        component: Producers
       }
     ]
   },

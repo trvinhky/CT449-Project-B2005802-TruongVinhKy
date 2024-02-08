@@ -7,5 +7,7 @@ router.get('/all', sachControllers.getAll)
 router.get('/detail', sachControllers.getOne)
 router.get('/count', sachControllers.getCount)
 router.get('/search', sachControllers.search)
+router.get('/allBy', sachControllers.getAllByMANXB)
+router.get('/random', sachControllers.getRandom)
 
 module.exports = router;

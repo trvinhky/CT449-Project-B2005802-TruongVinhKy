@@ -119,19 +119,19 @@ const sachControllers = {
     getAll: asyncHandler(async (req, res) => {
         const { page, limit } = req.query
         const LENGTH = limit ? parseInt(limit) : 6
-        let star = 0
+        let start = 0
         if (!isNaN(parseInt(page)) && parseInt(page) > 0) {
-            star = (LENGTH * page) - LENGTH
+            start = (LENGTH * page) - LENGTH
         }
 
         try {
             // lay tat ca sach
             const tatCaSach = await sachModel.find()
-                .skip(star)
+                .skip(start)
                 .limit(LENGTH)
                 .populate('MANXB');
 
-            // kiem tra hang hoa vua lay
+            // kiem tra sach vua lay
             if (tatCaSach) {
                 return res.status(201).json({
                     errorCode: 0,
@@ -156,7 +156,7 @@ const sachControllers = {
     getOne: asyncHandler(async (req, res) => {
         const { MASACH } = req.query
 
-        // kiem tra cac truong
+        // kiem tra mã sách
         if (!MASACH) {
             return res.status(400).json({
                 errorCode: 1,
@@ -218,10 +218,10 @@ const sachControllers = {
     search: asyncHandler(async (req, res) => {
         const { key, type, page } = req.query
 
-        const LENGTH = 6
-        let star = 0
+        const LENGTH = 8
+        let start = 0
         if (!isNaN(parseInt(page))) {
-            star = LENGTH * page
+            start = (LENGTH * page) - LENGTH
         }
         try {
             // lay tat ca sach
@@ -235,11 +235,94 @@ const sachControllers = {
             }
 
             const tatCaSach = await sachModel.find({ ...search })
-                .skip(star)
+                .skip(start)
                 .limit(LENGTH)
                 .populate('MANXB');
 
-            // kiem tra hang hoa vua lay
+            // kiem tra sach vua lay
+            if (tatCaSach) {
+                return res.status(201).json({
+                    errorCode: 0,
+                    data: tatCaSach,
+                    message: "Lấy tất cả sách thành công!"
+                })
+            } else {
+                return res.status(404).json({
+                    errorCode: 2,
+                    message: "Sách không tồn tại!"
+                })
+            }
+        } catch (err) {
+            return res.status(500).json({
+                errorCode: 3,
+                message: "Lỗi server!",
+                error: err.message
+            })
+        }
+    }),
+    // lay tat ca sach theo MANXB
+    getAllByMANXB: asyncHandler(async (req, res) => {
+        const { page, limit, MANXB } = req.query
+
+        // kiem tra MANXB
+        if (!MANXB) {
+            return res.status(400).json({
+                errorCode: 1,
+                message: 'MNXB không tồn tại!'
+            })
+        }
+
+        const LENGTH = limit ? parseInt(limit) : 6
+        let start = 0
+        if (!isNaN(parseInt(page)) && parseInt(page) > 0) {
+            start = (LENGTH * page) - LENGTH
+        }
+
+        try {
+            // lay tat ca sach
+            const tatCaSach = await sachModel.find({ MANXB })
+                .skip(start)
+                .limit(LENGTH)
+                .populate('MANXB');
+
+            // kiem tra sach vua lay
+            if (tatCaSach) {
+                return res.status(201).json({
+                    errorCode: 0,
+                    data: tatCaSach,
+                    message: "Lấy tất cả sách thành công!"
+                })
+            } else {
+                return res.status(404).json({
+                    errorCode: 2,
+                    message: "Sách không tồn tại!"
+                })
+            }
+        } catch (err) {
+            return res.status(500).json({
+                errorCode: 3,
+                message: "Lỗi server!",
+                error: err.message
+            })
+        }
+    }),
+    // lay tat ngau nhien sach
+    getRandom: asyncHandler(async (req, res) => {
+        try {
+            // lay tat ca sach
+            const tatCaSach = await sachModel.aggregate([
+                { $limit: 8 },
+                {
+                    $lookup: {
+                        from: 'NHAXUATBAN',
+                        localField: 'MANXB',
+                        foreignField: 'MANXB',
+                        as: 'MANXB'
+                    }
+                },
+            ])
+
+            // kiem tra sach vua lay
             if (tatCaSach) {
                 return res.status(201).json({
                     errorCode: 0,
