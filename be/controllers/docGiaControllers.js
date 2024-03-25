@@ -105,10 +105,6 @@ const docGiaControllers = {
         if (!HOLOT || !TEN || !DIACHI || !NGAYSINH || !MADOCGIA || !checkRole(PHAI)) {
             return res.status(400).json({
                 errorCode: 1,
-                data: {
-                    PHAI,
-                    MADOCGIA
-                },
                 message: "Tất cả các trường là bắt buộc!"
             })
         }

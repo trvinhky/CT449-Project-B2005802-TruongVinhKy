@@ -6,6 +6,8 @@ import Title from "~/components/Title.vue"
 import { useStore } from "vuex"
 import { useRoute } from "vue-router"
 import { computed } from "@vue/reactivity";
+import { theoDoiMuonSachAPI } from "~/services/theoDoiMuonSachAPI"
+import router from "~/router";
 
 export default {
     setup() {
@@ -13,6 +15,7 @@ export default {
         const route = useRoute()
         const title = ref(null)
         const currentDate = ref(null)
+        const endDate = ref(null)
         const MSB = ref(route.query.MSB)
         const data = ref(null)
 
@@ -23,7 +26,6 @@ export default {
                 data.value = await res.value
                 if (data.value) {
                     title.value = data.value.TENSACH
-                    console.log(data.value)
                 }
             } catch (e) {
                 console.log(e)
@@ -53,10 +55,36 @@ export default {
             return `${year}-${month}-${day}`;
         }
 
+        const handleSubmit = async () => {
+            const start = new Date(currentDate.value)
+            const end = new Date(endDate.value)
+            const msg = JSON.parse(localStorage.getItem('MADG'))
+
+            if (start.getTime() > end.getTime()) return
+
+            if (!msg) {
+                router.push('/login')
+            }
+
+            try {
+                const res = await theoDoiMuonSachAPI.create({
+                    MADOCGIA: msg,
+                    MASACH: MSB.value,
+                    NGAYMUON: start,
+                    NGAYTRA: end
+                })
+                console.log(res)
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
         return {
             title,
             data,
-            currentDate
+            currentDate,
+            handleSubmit,
+            endDate
         }
     },
     components: {
@@ -91,7 +119,8 @@ export default {
                         </Slide>
                     </Carousel>
 
-                    <Carousel id="thumbnails" :items-to-show="4" snap-align="start" v-model="currentSlide" ref="carousel">
+                    <Carousel id="thumbnails" :items-to-show="4" snap-align="start" v-model="currentSlide"
+                        ref="carousel">
                         <Slide v-for="slide in data.hinhAnh" :key="slide">
                             <div class="carousel__item" @click="slideTo(slide - 1)" style="margin: 0 5px;">
                                 <img :src="`/src/assets/images/books/${slide?.TENHA}`" :alt="slide?.MAHA"
@@ -125,7 +154,7 @@ export default {
                     <p class="detail-content__box">
                         Năm xuất bản: <span>{{ data.NAMXUATBAN }}</span>
                     </p>
-                    <form class="detail-content__form">
+                    <form class="detail-content__form" @submit.prevent="handleSubmit">
                         <span class="form-title">
                             Phiếu mượn
                         </span>
@@ -133,13 +162,13 @@ export default {
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="ngaymuon">Ngày mượn: </label>
-                                    <input type="date" name="ngaymuon" id="ngaymuon" :value="currentDate" required>
+                                    <input type="date" name="ngaymuon" id="ngaymuon" v-model="currentDate" required>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="ngaytra">Ngày trả: </label>
-                                    <input type="date" name="ngaytra" id="ngaytra" required>
+                                    <input type="date" name="ngaytra" id="ngaytra" required v-model="endDate">
                                 </div>
                             </div>
                         </div>

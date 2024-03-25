@@ -42,7 +42,7 @@ const hinhAnhControllers = {
     // xoa hinh anh
     delete: asyncHandler(async (req, res) => {
         const { MAHA } = req.params
-        // kiem tra cac truong
+        // kiem tra MAHA
         if (!MAHA) {
             return res.status(400).json({
                 errorCode: 1,
@@ -51,7 +51,7 @@ const hinhAnhControllers = {
         }
 
         try {
-            // them moi hinh Anh
+            // xoa hinh Anh
             const hinhAnh = await hinhAnhModel.findOneAndDelete({ MAHA })
 
             if (hinhAnh) {
@@ -88,7 +88,7 @@ const hinhAnhControllers = {
         }
 
         try {
-            // them moi hinh Anh
+            // tim kiem va cap nhat hinh Anh
             const hinhAnh = await hinhAnhModel.findOneAndUpdate(
                 { MAHA },
                 {
