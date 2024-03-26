@@ -144,18 +144,22 @@ const theoDoiMuonSachControllers = {
     }),
     // lay tat ca phieu muon
     getAll: asyncHandler(async (req, res) => {
-        const { page, status } = req.query
+        const { page, status, MADOCGIA } = req.query
         const LENGTH = 6
         let star = 0
         if (!isNaN(parseInt(page))) {
-            star = LENGTH * page
+            star = (LENGTH * page) - LENGTH
         }
 
         try {
             // lay tat phieu muon
             let search = {}
-            if (status || status == 0) {
-                search = { TRANGTHAI: status }
+            if (status || +status === 0) {
+                search = { TRANGTHAI: +status }
+            }
+
+            if (MADOCGIA) {
+                search = { ...search, MADOCGIA }
             }
 
             const tatCaPhieuMuon = await theoDoiMuonSachModel.find(search)

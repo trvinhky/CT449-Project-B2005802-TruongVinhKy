@@ -4,12 +4,11 @@ import Title from '~/components/Title.vue'
 import { useRoute } from "vue-router"
 import { sachAPI } from "~/services/sachAPI"
 import { nhaXuatBanAPI } from "~/services/nhaXuatBanAPI"
-import { useStore } from "vuex"
-import { computed } from "@vue/reactivity";
+import { useBookStore } from "~/store/bookStore"
 
 export default {
     setup() {
-        const store = useStore()
+        const bookStore = useBookStore()
         const route = useRoute()
         const MASACH = ref(null)
         const page = ref(parseInt(route.query.page) || 1)
@@ -27,9 +26,8 @@ export default {
 
         const getData = async () => {
             try {
-                await store.dispatch('sach/getAll', { page: page.value })
-                const res = computed(() => store.state.sach.tatCaSach)
-                data.value = await res.value
+                await bookStore.getAll(page.value)
+                data.value = bookStore.bookAll
 
                 nxb.value = (await nhaXuatBanAPI.getAll()).data
             } catch (err) {
@@ -39,9 +37,8 @@ export default {
 
         const getInfo = async (id) => {
             try {
-                await store.dispatch('sach/getInformation', { MASACH: id })
-                const res = computed(() => store.state.sach.chiTiet)
-                return await res.value
+                await bookStore.getInformation(id)
+                return bookStore.book
 
             } catch (err) {
                 console.log(err)

@@ -9,16 +9,30 @@ export const useAdminStore = defineStore('admin', {
     actions: {
         async login(Password, SoDienThoai) {
             try {
-                const { data } = await nhanVienAPI.login({ Password, SoDienThoai })
+                const { data, message } = await nhanVienAPI.login({ Password, SoDienThoai })
 
                 if (data) {
                     this.admin = data
                     this.isLoggedIn = true
+                    alert(message)
                 } else {
                     console.error('Failed to login')
                 }
             } catch (error) {
                 console.error('Failed to login:', error)
+            }
+        },
+        async setInfo(MSNV) {
+            try {
+                const { data } = await nhanVienAPI.getOne(MSNV)
+
+                if (data) {
+                    this.admin = data
+                } else {
+                    console.error('Failed to get info')
+                }
+            } catch (error) {
+                console.error('Failed to get info: ', error)
             }
         },
         logout() {

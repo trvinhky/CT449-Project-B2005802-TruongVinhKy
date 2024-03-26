@@ -55,7 +55,8 @@
     + MADOCGIA: String
     + MASACH: String
     + NGAYMUON: Date
-- GET api/v1/theoDoiMuonSach/all?page=1&status=1 -> lay tat ca TDMS (theo page = 1, trang thai = 1)
+- GET api/v1/theoDoiMuonSach/all?page=1&status=1&MADOCGIA=abc -> lay tat ca TDMS (theo page = 1, trang thai = 1, MADOCGIA = abc)
+    + MADOCGIA: String -> co the co hoac khong
     + page: int -> co the co hoac khong (page > 0)
     + status: int -> co the co hoac khong (nhan vao gia tri 0, 1, 2)
 - GET api/v1/theoDoiMuonSach/detail?MADOCGIA=abc&MASACH=bcd&NGAYMUON=2023-01-01 -> lay thong tin TDMS co MADOCGIA = abc, MASACH = bcd va NGAYMUON = 2023-01-01

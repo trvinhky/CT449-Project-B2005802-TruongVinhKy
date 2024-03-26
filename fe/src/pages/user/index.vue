@@ -5,16 +5,17 @@ import Table from "./Table.vue"
 import { useRoute } from "vue-router"
 import { docGiaAPI } from "~/services/docGiaAPI"
 import router from "~/router";
+import { useUserStore } from "~/store/userStore"
 
 export default {
     setup() {
+        const userStore = useUserStore()
         const route = useRoute()
         const tenKH = ref('')
         const hoKH = ref('')
         const diaChi = ref('')
         const phone = ref('')
         const changeTab = ref(0)
-        const isAction = ref(true)
         const ngaySinh = ref('')
         const gioiTinh = ref(1)
         const isDisabled = ref(true)
@@ -34,7 +35,8 @@ export default {
                 if (!MSDG) {
                     router.push('/')
                 }
-                const { data } = await docGiaAPI.getInfo(MSDG.value)
+                await userStore.setInfo(MSDG.value)
+                const data = userStore.user
                 if (data) {
                     tenKH.value = data.TEN
                     hoKH.value = data.HOLOT
@@ -53,7 +55,6 @@ export default {
 
         const updateData = async () => {
             try {
-                console.log(MSDG.value)
                 const { data, message } = await docGiaAPI.update(MSDG.value, {
                     HOLOT: hoKH.value,
                     TEN: tenKH.value,
@@ -80,8 +81,6 @@ export default {
 
         const handleChangeTab = async (id) => {
             changeTab.value = id
-            if (id === 0) isAction.value = true
-            else isAction.value = false
         }
 
         const checkActive = async (id) => changeTab.value === id
@@ -101,7 +100,6 @@ export default {
             phone,
             changeTab,
             handleChangeTab,
-            isAction,
             checkActive,
             hoKH,
             ngaySinh,
@@ -109,7 +107,9 @@ export default {
             isDisabled,
             toggleEdit,
             updateData,
-            handleLoggout
+            handleLoggout,
+            MSDG
+
         }
     },
     components: {
@@ -193,7 +193,7 @@ export default {
                 </li>
             </ul>
             <div class="user-tab__content">
-                <Table :isAction="isAction" />
+                <Table :index="changeTab" :userId="MSDG" />
             </div>
         </div>
     </section>

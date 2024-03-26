@@ -2,12 +2,15 @@
 import { onMounted, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 import Title from '~/components/Title.vue'
+import { theoDoiMuonSachAPI } from "~/services/theoDoiMuonSachAPI"
 
 export default {
     setup() {
         const route = useRoute()
         const isCheck = ref(false)
         const title = ref('Danh sách phiếu mượn')
+        const status = ref(0)
+        const data = ref([])
 
         const checkPath = (name) => route.query.action === name
 
@@ -16,30 +19,79 @@ export default {
             isCheck.value = check
         }
 
+        const getData = async () => {
+            try {
+                const res = await theoDoiMuonSachAPI.getAll(status.value, 1)
+                if (res.data) {
+                    data.value = res.data
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
         const updateTitle = () => {
-            if (checkPath('out')) {
-                changeValue(false, ' quá hạn')
+            if (checkPath('pending')) {
+                changeValue(true, ' đang mượn')
+                status.value = 1
             } else if (checkPath('histories')) {
                 changeValue(false, ' đã trả')
+                status.value = 2
             } else {
+                status.value = 0
                 changeValue(true)
             }
             document.title = title.value
         }
 
         // Update title initially
-        onMounted(() => {
+        onMounted(async () => {
             updateTitle()
+            await getData()
         })
 
         // Watch for route changes and update title accordingly
-        watch(() => route.query.action, () => {
+        watch(() => route.query.action, async () => {
             updateTitle()
+            await getData()
         })
+
+        const convertDate = (time) => {
+            const date = new Date(time);
+            return date.toISOString().split('T')[0];
+        }
+
+        const convertState = (state) => state === 1 ? 'Đang mượn' : state === 2 ? 'Đã trả' : 'Chờ duyệt'
+
+        const handleCheck = async (MADOCGIA, MASACH, NGAYMUON) => {
+            try {
+                if (MADOCGIA || MASACH || NGAYMUON) {
+                    let message
+                    if (status.value === 0) {
+                        const res = await theoDoiMuonSachAPI.update(MADOCGIA, MASACH, NGAYMUON, 1)
+                        message = res.message
+                    }
+
+                    if (status.value === 1) {
+                        const res = await theoDoiMuonSachAPI.update(MADOCGIA, MASACH, NGAYMUON, 2)
+                        message = res.message
+                    }
+
+                    alert(message)
+                    await getData()
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
 
         return {
             title,
-            isCheck
+            isCheck,
+            data,
+            convertDate,
+            convertState,
+            handleCheck
         }
     },
     components: {
@@ -70,19 +122,26 @@ export default {
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
+            <tbody v-if="data">
+                <tr v-for="(item, i) in data" :key="item._id">
+                    <td>{{ i + 1 }}</td>
                     <td>
-                        <router-link to="/bill/agaga/dd" class="table-btn">
+                        {{ `${item?.MADOCGIA?.HOLOT}
+                        ${item?.MADOCGIA?.TEN}`
+                        }}
+                    </td>
+                    <td>{{ item?.MADOCGIA?.DIACHI }}</td>
+                    <td>{{ convertDate(item.NGAYMUON) }}</td>
+                    <td>{{ convertDate(item.NGAYTRA) }}</td>
+                    <td>{{ convertState(item.TRANGTHAI) }}</td>
+                    <td>
+                        <router-link
+                            :to="`/bill?user=${item?.MADOCGIA?._id}&book=${item.MASACH.MASACH}&date=${item.NGAYMUON}`"
+                            class="table-btn">
                             <i class="fa-solid fa-eye"></i>
                         </router-link>
-                        <button class="table-btn table-btn--add" v-if="isCheck">
+                        <button class="table-btn table-btn--add" v-if="isCheck"
+                            @click="() => handleCheck(item?.MADOCGIA?._id, item.MASACH.MASACH, item.NGAYMUON)">
                             <i class="fa-solid fa-check"></i>
                         </button>
                     </td>

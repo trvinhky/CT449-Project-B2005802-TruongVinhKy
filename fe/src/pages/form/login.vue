@@ -1,11 +1,13 @@
 <script>
 import { ref, onMounted } from "vue";
 import router from "~/router";
-import { docGiaAPI } from "~/services/docGiaAPI";
-import { nhanVienAPI } from "~/services/nhanVienAPI";
+import { useAdminStore } from "~/store/adminStore";
+import { useUserStore } from "~/store/userStore";
 
 export default {
     setup() {
+        const userStore = useUserStore()
+        const adminStore = useAdminStore()
         const SoDienThoai = ref('');
         const Password = ref('');
         const isUser = ref(window.location.href.indexOf('admin') === -1)
@@ -16,12 +18,7 @@ export default {
 
         const loginUser = async (pass, phone) => {
             try {
-                const { message, data } = await docGiaAPI.login({
-                    MATKHAU: pass,
-                    DIENTHOAI: phone
-                })
-                alert(message)
-                localStorage.setItem('MADG', JSON.stringify(data.MADOCGIA));
+                await userStore.login(pass, phone)
                 router.push('/')
             } catch (err) {
                 console.log(err)
@@ -30,12 +27,7 @@ export default {
 
         const loginAdmin = async (pass, phone) => {
             try {
-                const { message, data } = await nhanVienAPI.login({
-                    Password: pass,
-                    SoDienThoai: phone
-                })
-                alert(message)
-                localStorage.setItem('MANV', JSON.stringify(data.MSNV));
+                await adminStore.login(pass, phone)
                 router.push('/admin')
             } catch (err) {
                 console.log(err)

@@ -4,9 +4,11 @@ import { ref, onMounted, computed } from "vue";
 import router from '~/router';
 import Loading from '~/components/Loading.vue';
 import { nhaXuatBanAPI } from '~/services/nhaXuatBanAPI';
+import { useUserStore } from '~/store/userStore';
 
 export default {
   setup() {
+    const userStore = useUserStore()
     const isLoading = ref(false)
     const search = ref('')
     const MADG = ref('')
@@ -27,10 +29,10 @@ export default {
     }
 
     onMounted(async () => {
-      const data = localStorage.getItem('MADG');
+      const MADOCGIA = userStore?.user?.MADOCGIA;
       await getDataNXB()
-      if (data) {
-        MADG.value = JSON.parse(data)
+      if (MADOCGIA) {
+        MADG.value = MADOCGIA
       }
     })
 
@@ -86,7 +88,8 @@ export default {
           <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
               <h5 id="offcanvasRightLabel" style="font-weight: 600;">Danh mục</h5>
-              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
               <nav class="list">
@@ -124,4 +127,3 @@ export default {
 <style lang="scss" scoped>
 @import url('~/assets/scss/default.scss');
 </style>
-  

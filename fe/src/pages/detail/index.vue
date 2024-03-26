@@ -3,15 +3,16 @@ import { ref, onMounted, watch } from "vue"
 import { Carousel, Slide } from 'vue3-carousel'
 import Card from '~/components/Card.vue'
 import Title from "~/components/Title.vue"
-import { useStore } from "vuex"
 import { useRoute } from "vue-router"
-import { computed } from "@vue/reactivity";
 import { theoDoiMuonSachAPI } from "~/services/theoDoiMuonSachAPI"
 import router from "~/router";
+import { useBookStore } from "~/store/bookStore"
+import { useUserStore } from "~/store/userStore"
 
 export default {
     setup() {
-        const store = useStore()
+        const bookStore = useBookStore()
+        const userStore = useUserStore()
         const route = useRoute()
         const title = ref(null)
         const currentDate = ref(null)
@@ -21,9 +22,8 @@ export default {
 
         const getData = async () => {
             try {
-                await store.dispatch('sach/getInformation', { MASACH: MSB.value })
-                const res = computed(() => store.state.sach.chiTiet)
-                data.value = await res.value
+                await bookStore.getInformation(MSB.value)
+                data.value = bookStore.book
                 if (data.value) {
                     title.value = data.value.TENSACH
                 }
@@ -58,12 +58,13 @@ export default {
         const handleSubmit = async () => {
             const start = new Date(currentDate.value)
             const end = new Date(endDate.value)
-            const msg = JSON.parse(localStorage.getItem('MADG'))
+            const msg = userStore?.user?.MADOCGIA
 
             if (start.getTime() > end.getTime()) return
 
             if (!msg) {
                 router.push('/login')
+                return
             }
 
             try {
@@ -73,7 +74,7 @@ export default {
                     NGAYMUON: start,
                     NGAYTRA: end
                 })
-                console.log(res)
+                alert(res.message)
             } catch (e) {
                 console.log(e)
             }

@@ -47,7 +47,7 @@ export const useBookStore = defineStore('book', {
                 console.error('Get all book failed: ', error)
             }
         },
-        async search({ type, key, page = 1 }) {
+        async search(type, key, page = 1) {
             try {
                 const { data } = await sachAPI.search(type, key, page)
 
@@ -61,7 +61,7 @@ export const useBookStore = defineStore('book', {
                 console.log('Search book failed: ', err.message)
             }
         },
-        async getInformation({ MASACH }) {
+        async getInformation(MASACH) {
             try {
                 const { data } = await sachAPI.getOne(MASACH)
                 if (data) {
@@ -91,7 +91,7 @@ export const useBookStore = defineStore('book', {
                 console.log('Get random book failed: ', err.message)
             }
         },
-        async getAllByNXB({ MANXB, page = 1, limit = 6 }) {
+        async getAllByNXB(MANXB, page = 1, limit = 6) {
             try {
                 const { data } = await sachAPI.getAllByMANXB(MANXB, page, limit)
                 if (data) {

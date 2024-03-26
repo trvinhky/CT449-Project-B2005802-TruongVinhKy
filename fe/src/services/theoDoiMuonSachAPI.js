@@ -4,16 +4,16 @@ const getURL = (url = '') => `/theoDoiMuonSach/${url}`;
 
 export const theoDoiMuonSachAPI = {
     create: async (data) => await axiosClient.post(getURL(), data),
-    update: async (MADOCGIA, MASACH, NGAYMUON) => await axiosClient.put(getURL(`edit?MADOCGIA=${MADOCGIA}&MASACH=${MASACH}&NGAYMUON=${NGAYMUON}`)),
-    getAll: async (status = null, page = null) => {
-        let url = getURL('all')
-
-        if (status) {
-            url += `all?status=${status}`
-        }
+    update: async (MADOCGIA, MASACH, NGAYMUON, TRANGTHAI) => await axiosClient.put(getURL(`edit?MADOCGIA=${MADOCGIA}&MASACH=${MASACH}&NGAYMUON=${NGAYMUON}`), { TRANGTHAI }),
+    getAll: async (status = 0, page = null, MADOCGIA = null) => {
+        let url = getURL(`all?status=${status}`)
 
         if (page) {
             url += `&page=${page}`
+        }
+
+        if (MADOCGIA) {
+            url += `&MADOCGIA=${MADOCGIA}`
         }
 
         return await axiosClient.get(url)

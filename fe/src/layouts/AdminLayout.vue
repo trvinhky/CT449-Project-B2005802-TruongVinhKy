@@ -2,25 +2,26 @@
 import { ref, onMounted } from "vue";
 import Logo from '../components/Logo.vue';
 import router from '~/router';
-import { nhanVienAPI } from '~/services/nhanVienAPI'
+import { useAdminStore } from "~/store/adminStore";
 
 export default {
     setup() {
+        const adminStore = useAdminStore()
         const TenNV = ref('')
 
         const handleLoggout = async () => {
-            localStorage.removeItem('MANV')
+            adminStore.logout()
             router.push('/login/admin')
         }
 
         const getData = async () => {
-            const MANV = localStorage.getItem('MANV');
-            if (MANV) {
+            const MSNV = adminStore.admin.MSNV;
+            if (MSNV) {
                 try {
-                    const res = await nhanVienAPI.getOne(JSON.parse(MANV))
+                    await adminStore.setInfo(MSNV)
 
-                    if (res.data) {
-                        TenNV.value = res.data.HoTenNV
+                    if (adminStore.admin) {
+                        TenNV.value = adminStore.admin.HoTenNV
                     }
                 } catch (err) {
                     console.log(err)
@@ -98,8 +99,8 @@ export default {
                     <router-link to="/admin/bills?action=check" class="admin-bottom__link">
                         <i class="fa-solid fa-list-check"></i> Chờ duyệt
                     </router-link>
-                    <router-link to="/admin/bills?action=out" class="admin-bottom__link">
-                        <i class="fa-solid fa-user-clock"></i> Quá hạn
+                    <router-link to="/admin/bills?action=pending" class="admin-bottom__link">
+                        <i class="fa-solid fa-user-clock"></i> Đang mượn
                     </router-link>
                     <router-link to="/admin/bills?action=histories" class="admin-bottom__link">
                         <i class="fa-solid fa-book-bookmark"></i> Lịch sử
@@ -117,4 +118,3 @@ export default {
 <style lang="scss" scoped>
 @import url('~/assets/scss/admin.scss');
 </style>
-  

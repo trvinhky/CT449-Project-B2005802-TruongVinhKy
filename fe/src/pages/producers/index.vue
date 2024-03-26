@@ -3,14 +3,13 @@ import { ref, onMounted, watch } from "vue"
 import Products from '~/components/Products.vue'
 import { useRoute } from "vue-router"
 import router from "~/router"
-import { useStore } from "vuex"
-import { computed } from "@vue/reactivity";
 import { nhaXuatBanAPI } from '~/services/nhaXuatBanAPI'
+import { useBookStore } from "~/store/bookStore"
 
 export default {
     setup() {
         const route = useRoute()
-        const store = useStore()
+        const bookStore = useBookStore()
         const title = ref('')
         const MNXB = ref(route.query.nxb)
         const data = ref([])
@@ -34,9 +33,8 @@ export default {
                     router.push('/')
                 }
                 await getInfo()
-                await store.dispatch('sach/getAllByNXB', { MANXB: MNXB.value, limit: 8 })
-                const res = computed(() => store.state.sach.sachByNXB)
-                data.value = await res.value
+                await bookStore.getAllByNXB(MNXB.value, 8)
+                data.value = bookStore.bookBy
                 document.title = title.value
             } catch (e) {
                 console.log(e)

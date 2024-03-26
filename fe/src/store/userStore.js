@@ -9,16 +9,30 @@ export const useUserStore = defineStore('user', {
     actions: {
         async login(MATKHAU, DIENTHOAI) {
             try {
-                const { data } = await docGiaAPI.login({ MATKHAU, DIENTHOAI })
+                const { data, message } = await docGiaAPI.login({ MATKHAU, DIENTHOAI })
 
                 if (data) {
                     this.user = data
                     this.isLoggedIn = true
+                    alert(message)
                 } else {
                     console.error('Failed to login')
                 }
             } catch (error) {
-                console.error('Failed to login:', error)
+                console.error('Failed to login: ', error)
+            }
+        },
+        async setInfo(MADOCGIA) {
+            try {
+                const { data } = await docGiaAPI.getInfo(MADOCGIA)
+
+                if (data) {
+                    this.user = data
+                } else {
+                    console.error('Failed to get info')
+                }
+            } catch (error) {
+                console.error('Failed to get info: ', error)
             }
         },
         logout() {

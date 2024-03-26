@@ -2,14 +2,13 @@
 import { ref, onMounted, watch } from "vue"
 import Card from '~/components/Card.vue'
 import { useRoute } from "vue-router"
-import { useStore } from "vuex"
-import { computed } from "@vue/reactivity";
 import router from "~/router";
+import { useBookStore } from "~/store/bookStore";
 
 export default {
     setup() {
         const route = useRoute()
-        const store = useStore()
+        const bookStore = useBookStore()
         const title = ref(route.query.key)
         const type = ref(route.query.type)
         const address = ref('')
@@ -20,9 +19,8 @@ export default {
         const getData = async () => {
             try {
                 if (type.value === 'name' || type.value === 'author') {
-                    await store.dispatch('sach/search', { type: type.value, key: title.value })
-                    const res = computed(() => store.state.sach.timKiem)
-                    data.value = await res.value
+                    await bookStore.search(type.value, title.value)
+                    data.value = bookStore.search
                 }
                 document.title = `Từ khóa: ${title.value}`
             } catch (e) {
@@ -87,7 +85,8 @@ export default {
                                     <label for="name_book">Tên sách</label>
                                 </div>
                                 <div class="home-check">
-                                    <input type="radio" name="search_type" id="author_book" value="author" v-model="option">
+                                    <input type="radio" name="search_type" id="author_book" value="author"
+                                        v-model="option">
                                     <label for="author_book">Tác giả</label>
                                 </div>
                             </div>

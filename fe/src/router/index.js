@@ -19,10 +19,12 @@ import CreateAdmin from '~/pages/admin/createAdmin/index.vue'
 import Bill from '~/pages/admin/bill/index.vue'
 import Login from '~/pages/form/login.vue'
 import Register from "~/pages/form/register.vue";
+import { useAdminStore } from "~/store/adminStore";
+import { useUserStore } from "~/store/userStore";
 
 const requireAdmin = (to, from, next) => {
-  const data = localStorage.getItem('MANV');
-  if (data) {
+  const adminStore = useAdminStore()
+  if (adminStore.isLoggedIn) {
     next()
   } else {
     next({ name: "loginAdmin", params: {} })
@@ -30,8 +32,8 @@ const requireAdmin = (to, from, next) => {
 };
 
 const requireUser = (to, from, next) => {
-  const data = localStorage.getItem('MADG');
-  if (data) {
+  const userStore = useUserStore()
+  if (userStore.isLoggedIn) {
     next()
   } else {
     next({ name: "login", params: {} })
@@ -67,7 +69,12 @@ const routes = [
         path: "authors",
         name: "authors",
         component: Producers
-      }
+      },
+      {
+        path: "bill",
+        name: "bill",
+        component: DetailBill
+      },
     ]
   },
   {
@@ -75,11 +82,6 @@ const routes = [
     component: DefaultLayout,
     beforeEnter: requireUser,
     children: [
-      {
-        path: "bill",
-        name: "bill",
-        component: DetailBill
-      },
       {
         path: 'user',
         name: "user",

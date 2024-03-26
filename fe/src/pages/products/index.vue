@@ -3,14 +3,13 @@ import { ref, onMounted, watch } from "vue"
 import Products from '~/components/Products.vue'
 import { useRoute } from "vue-router"
 import router from "~/router"
-import { useStore } from "vuex"
 import { sachAPI } from "~/services/sachAPI"
-import { computed } from "@vue/reactivity";
+import { useBookStore } from "~/store/bookStore"
 
 export default {
     setup() {
         const route = useRoute()
-        const store = useStore()
+        const bookStore = useBookStore()
         const title = ref('')
         const page = ref(parseInt(route.query.page) || 1)
         const name = ref(route.query.name)
@@ -19,24 +18,22 @@ export default {
 
         const getData = async () => {
             try {
-                let res
                 switch (name.value) {
                     case 'new':
                         title.value = 'Sản phẩm mới'
-                        await store.dispatch('sach/getAll', { page: page.value, limit: 8 })
-                        res = computed(() => store.state.sach.tatCaSach)
+                        await bookStore.getAll(page.value, 8)
+                        data.value = bookStore.bookAll
                         count.value = (await sachAPI.getCount()).data
                         count.value = Math.ceil(count.value / 8)
                         break
                     case 'random':
                         title.value = 'Sản phẩm đề xuất'
-                        await store.dispatch('sach/getRandom')
-                        res = computed(() => store.state.sach.random)
+                        await bookStore.getRandom()
+                        data.value = bookStore.random
                         break
                     default:
                         router.push('/')
                 }
-                data.value = await res.value
                 document.title = title.value
             } catch (e) {
                 console.log(e)

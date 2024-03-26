@@ -3,8 +3,7 @@ import Fish from './fish/index.vue';
 import CarouselHome from './CarouselHome.vue'
 import Group from '~/components/Group.vue'
 import { onMounted, ref } from 'vue';
-import { useStore } from "vuex"
-import { computed } from "@vue/reactivity";
+import { useBookStore } from '~/store/bookStore';
 
 export default {
     components: {
@@ -13,7 +12,7 @@ export default {
         Group
     },
     setup() {
-        const store = useStore()
+        const bookStore = useBookStore()
         const newBooks = ref([])
         const randomBooks = ref([])
 
@@ -25,9 +24,8 @@ export default {
 
         const getNewBooks = async () => {
             try {
-                await store.dispatch('sach/getAll', { page: 1 })
-                const res = computed(() => store.state.sach.tatCaSach)
-                newBooks.value = await res.value
+                await bookStore.getAll(1)
+                newBooks.value = bookStore.bookAll
             } catch (err) {
                 console.log(err)
             }
@@ -35,9 +33,8 @@ export default {
 
         const getRandomBooks = async () => {
             try {
-                await store.dispatch('sach/getRandom')
-                const res = computed(() => store.state.sach.random)
-                randomBooks.value = await res.value
+                await bookStore.getRandom()
+                randomBooks.value = bookStore.random
             } catch (err) {
                 console.log(err)
             }
