@@ -311,7 +311,7 @@ const sachControllers = {
         try {
             // lay tat ca sach
             const tatCaSach = await sachModel.aggregate([
-                { $limit: 8 },
+                { $sample: { size: 8 } },
                 {
                     $lookup: {
                         from: 'NHAXUATBAN',

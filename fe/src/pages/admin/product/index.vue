@@ -5,6 +5,7 @@ import { useRoute } from "vue-router"
 import { sachAPI } from "~/services/sachAPI"
 import { nhaXuatBanAPI } from "~/services/nhaXuatBanAPI"
 import { useBookStore } from "~/store/bookStore"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -25,6 +26,7 @@ export default {
         const TENHA = ref('')
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 await bookStore.getAll(page.value)
                 data.value = bookStore.bookAll
@@ -33,19 +35,23 @@ export default {
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         const getInfo = async (id) => {
+            loadingState.loading = true
             try {
                 await bookStore.getInformation(id)
+                loadingState.loading = false
                 return bookStore.book
-
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         const getCountPage = async () => {
+            loadingState.loading = true
             try {
                 const { data } = await sachAPI.getCount()
                 if (data) {
@@ -54,6 +60,7 @@ export default {
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         onMounted(async () => {
@@ -96,6 +103,7 @@ export default {
                 return alert('Vui lòng nhập năm xuất bản là số!')
             }
 
+            loadingState.loading = true
             try {
                 const { message } = await sachAPI.update(MASACH.value, {
                     TENSACH: TENSACH.value,
@@ -106,10 +114,12 @@ export default {
                     MANXB: MANXB.value
                 })
 
+                loadingState.loading = false
                 alert(message)
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         return {

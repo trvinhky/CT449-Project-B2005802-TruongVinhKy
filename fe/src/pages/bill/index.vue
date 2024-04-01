@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
 import { hinhAnhAPI } from "~/services/hinhAnhAPI"
 import { theoDoiMuonSachAPI } from "~/services/theoDoiMuonSachAPI"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -16,6 +17,7 @@ export default {
         const getData = async () => {
             if (!MADG.value || !MAB.value || !NM.value) return
 
+            loadingState.loading = true
             try {
 
                 const res = await theoDoiMuonSachAPI.getOne(MADG.value, MAB.value, NM.value)
@@ -26,12 +28,12 @@ export default {
                     if (MASACH) {
                         const resHA = await hinhAnhAPI.getByBook(MASACH)
                         if (resHA.data) image.value = resHA.data[0]
-                        console.log(image.value)
                     }
                 }
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         onMounted(async () => {

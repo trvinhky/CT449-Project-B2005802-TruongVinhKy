@@ -3,6 +3,7 @@ import Title from '~/components/Title.vue'
 import { ref } from "vue"
 import { nhanVienAPI } from '~/services/nhanVienAPI'
 import router from "~/router";
+import loadingState from '~/utils/loadingState';
 
 export default {
     setup() {
@@ -29,6 +30,7 @@ export default {
                 return alert('Vui lòng nhập mật khẩu chứa số, chữ thường, chữ in và ít nhất 8 kí tự!')
             }
 
+            loadingState.loading = true
             try {
                 const { message } = await nhanVienAPI.register({
                     HoTenNV: HoTenNV.value,
@@ -38,12 +40,14 @@ export default {
                     ChucVu: ChucVu.value
                 })
 
-                console.log(message)
+                loadingState.loading = false
+                alert(message)
                 router.push('/admin/account?name=admin')
             } catch (e) {
                 alert('Tạo tài khoản thất bại!')
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         return {
@@ -98,7 +102,8 @@ export default {
                             <div class="admin-form__group my-4">
                                 <label for="password">Mật khẩu</label>
                                 <div class="admin-password">
-                                    <input :type="isShow ? 'text' : 'password'" id="password" required v-model="Password">
+                                    <input :type="isShow ? 'text' : 'password'" id="password" required
+                                        v-model="Password">
                                     <span class="admin-password__btn" @click="handleToggleShow"
                                         v-html="isShow ? eyeIcon : eyeSlashIcon">
                                     </span>

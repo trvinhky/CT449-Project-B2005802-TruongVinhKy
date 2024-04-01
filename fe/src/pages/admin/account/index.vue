@@ -4,6 +4,7 @@ import { useRoute } from "vue-router"
 import Title from '~/components/Title.vue'
 import { docGiaAPI } from "~/services/docGiaAPI"
 import { nhanVienAPI } from "~/services/nhanVienAPI"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -13,6 +14,7 @@ export default {
         const data = ref([])
 
         const updateTitle = async () => {
+            loadingState.loading = true
             try {
                 if (route.query.name === 'user') {
                     title.value = 'Danh sách độc giả'
@@ -27,6 +29,7 @@ export default {
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         // Update title initially
@@ -68,7 +71,6 @@ export default {
                     <th scope="col">SĐT</th>
                     <th scope="col">Địa chỉ</th>
                     <th scope="col" v-if="!isUser">Chức vụ</th>
-                    <th scope="col" v-if="isUser" class="text-danger">Quá hạn</th>
                 </tr>
             </thead>
             <tbody v-if="data">
@@ -78,7 +80,6 @@ export default {
                     <td>{{ isUser ? h.DIENTHOAI : h.SoDienThoai }}</td>
                     <td>{{ isUser ? h.DIACHI : h.DiaChi }}</td>
                     <td v-if="!isUser">{{ h.ChucVu }}</td>
-                    <td v-if="isUser" class="text-danger">0</td>
                 </tr>
             </tbody>
         </table>

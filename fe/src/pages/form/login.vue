@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import router from "~/router";
 import { useAdminStore } from "~/store/adminStore";
 import { useUserStore } from "~/store/userStore";
+import loadingState from "~/utils/loadingState";
 
 export default {
     setup() {
@@ -17,21 +18,27 @@ export default {
         })
 
         const loginUser = async (pass, phone) => {
+            loadingState.loading = true
             try {
                 await userStore.login(pass, phone)
+                loadingState.loading = false
                 router.push('/')
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         const loginAdmin = async (pass, phone) => {
+            loadingState.loading = true
             try {
                 await adminStore.login(pass, phone)
+                loadingState.loading = false
                 router.push('/admin')
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         const handleLogin = async () => {

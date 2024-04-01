@@ -4,6 +4,7 @@ import Card from '~/components/Card.vue'
 import { useRoute } from "vue-router"
 import router from "~/router";
 import { useBookStore } from "~/store/bookStore";
+import loadingState from "~/utils/loadingState";
 
 export default {
     setup() {
@@ -14,18 +15,20 @@ export default {
         const address = ref('')
         const option = ref('name')
         const data = ref([])
-        const search = ref()
+        const searchInput = ref()
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 if (type.value === 'name' || type.value === 'author') {
                     await bookStore.search(type.value, title.value)
-                    data.value = bookStore.search
+                    data.value = bookStore.searchValue
                 }
                 document.title = `Từ khóa: ${title.value}`
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         onMounted(async () => {
@@ -44,7 +47,7 @@ export default {
 
         const handleSearch = async () => {
             if (router) {
-                router.push(`/search?key=${search.value}&type=${option.value}`);
+                router.push(`/search?key=${searchInput.value}&type=${option.value}`);
             }
         }
 
@@ -53,7 +56,7 @@ export default {
             address,
             option,
             data,
-            search,
+            searchInput,
             handleSearch
         }
     },
@@ -73,7 +76,7 @@ export default {
                         <form class="home-form" method="get" @submit.prevent="handleSearch">
                             <div class="home-search">
                                 <input type="search" name="search" placeholder="Nhập từ khóa tìm kiếm..."
-                                    v-model="search" />
+                                    v-model="searchInput" />
                                 <button type="submit">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </button>
@@ -92,17 +95,7 @@ export default {
                             </div>
                         </form>
                     </div>
-                    <div class="col-5">
-                        <form class="filter" method="get">
-                            <button type="submit" class="filter__btn">
-                                Sắp xếp:
-                            </button>
-                            <select class="filter__select">
-                                <option selected value="0">A - Z</option>
-                                <option value="1">Z - A</option>
-                            </select>
-                        </form>
-                    </div>
+                    <div class="col-5"></div>
                     <div class="col-12">
                         <div class="row pt-3" v-if="data">
                             <div class="col-3" v-for="item in data" :key="item._id">

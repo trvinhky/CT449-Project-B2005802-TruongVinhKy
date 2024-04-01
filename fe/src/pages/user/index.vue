@@ -6,6 +6,7 @@ import { useRoute } from "vue-router"
 import { docGiaAPI } from "~/services/docGiaAPI"
 import router from "~/router";
 import { useUserStore } from "~/store/userStore"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -35,6 +36,7 @@ export default {
                 if (!MSDG) {
                     router.push('/')
                 }
+                loadingState.loading = true
                 await userStore.setInfo(MSDG.value)
                 const data = userStore.user
                 if (data) {
@@ -44,7 +46,9 @@ export default {
                     gioiTinh.value = data.PHAI
                     diaChi.value = data.DIACHI
                     phone.value = data.DIENTHOAI
+                    loadingState.loading = false
                 } else {
+                    loadingState.loading = false
                     router.push('/')
                 }
             } catch (err) {
@@ -55,6 +59,7 @@ export default {
 
         const updateData = async () => {
             try {
+                loadingState.loading = true
                 const { data, message } = await docGiaAPI.update(MSDG.value, {
                     HOLOT: hoKH.value,
                     TEN: tenKH.value,
@@ -62,6 +67,7 @@ export default {
                     NGAYSINH: ngaySinh.value,
                     PHAI: +gioiTinh.value
                 })
+                loadingState.loading = false
                 alert(message)
 
                 if (data) {

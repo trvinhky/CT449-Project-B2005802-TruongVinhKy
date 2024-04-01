@@ -29,7 +29,7 @@ export const useBookStore = defineStore('book', {
     state: () => ({
         book: null,
         bookAll: [],
-        search: [],
+        searchValue: [],
         random: [],
         bookBy: []
     }),
@@ -52,7 +52,7 @@ export const useBookStore = defineStore('book', {
                 const { data } = await sachAPI.search(type, key, page)
 
                 if (data) {
-                    this.search = await getHinhAnh(data)
+                    this.searchValue = await getHinhAnh(data)
                 } else {
                     console.error('Search book failed')
                 }

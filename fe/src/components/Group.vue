@@ -43,7 +43,7 @@ export default {
         </router-link>
     </div>
     <Carousel v-bind="settings" class="w-100">
-        <Slide v-if="data" v-for="slide in data" :key="slide">
+        <Slide v-if="data" v-for="(slide, i) in data" :key="i">
             <div class="carousel__item" style="margin: 0 10px;">
                 <Card :data="slide" />
             </div>

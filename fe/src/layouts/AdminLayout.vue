@@ -1,13 +1,16 @@
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import Logo from '../components/Logo.vue';
 import router from '~/router';
 import { useAdminStore } from "~/store/adminStore";
+import loadingState from '~/utils/loadingState'
+import Loading from "~/components/Loading.vue";
 
 export default {
     setup() {
         const adminStore = useAdminStore()
         const TenNV = ref('')
+        const isLoading = ref(loadingState.loading)
 
         const handleLoggout = async () => {
             adminStore.logout()
@@ -33,18 +36,25 @@ export default {
             await getData()
         })
 
+        watch(() => loadingState.loading, async () => {
+            isLoading.value = loadingState.loading
+        })
+
         return {
             handleLoggout,
-            TenNV
+            TenNV,
+            isLoading
         }
     },
     components: {
-        Logo
+        Logo,
+        Loading
     }
 }
 </script>
 
 <template>
+    <Loading v-if="isLoading" />
     <header>
         <div class="container py-1">
             <Logo />

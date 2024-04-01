@@ -5,6 +5,7 @@ import { useRoute } from "vue-router"
 import router from "~/router"
 import { nhaXuatBanAPI } from '~/services/nhaXuatBanAPI'
 import { useBookStore } from "~/store/bookStore"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -28,17 +29,19 @@ export default {
         }
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 if (!MNXB.value) {
                     router.push('/')
                 }
                 await getInfo()
-                await bookStore.getAllByNXB(MNXB.value, 8)
+                await bookStore.getAllByNXB(MNXB.value, 1, 8)
                 data.value = bookStore.bookBy
                 document.title = title.value
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         onMounted(async () => {

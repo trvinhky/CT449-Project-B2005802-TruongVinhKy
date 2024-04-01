@@ -6,6 +6,7 @@ import { docGiaAPI } from "~/services/docGiaAPI"
 import { nhanVienAPI } from "~/services/nhanVienAPI"
 import { sachAPI } from "~/services/sachAPI"
 import { theoDoiMuonSachAPI } from "~/services/theoDoiMuonSachAPI"
+import loadingState from "~/utils/loadingState"
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -27,7 +28,7 @@ export default {
         }
         onMounted(async () => {
             document.title = 'Trang quản trị'
-
+            loadingState.loading = true
             try {
                 countUser.value = (await docGiaAPI.getCount()).data
                 countAdmin.value = (await nhanVienAPI.getCount()).data
@@ -36,7 +37,7 @@ export default {
             } catch (err) {
                 console.log(err)
             }
-
+            loadingState.loading = false
         })
         return {
             data,

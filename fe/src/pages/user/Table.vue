@@ -1,6 +1,7 @@
 <script>
 import { ref, onMounted, watch } from "vue"
 import { theoDoiMuonSachAPI } from "~/services/theoDoiMuonSachAPI"
+import loadingState from "~/utils/loadingState"
 
 export default {
     props: {
@@ -19,6 +20,7 @@ export default {
 
         const getData = async () => {
             if (!props.userId || [0, 1, 2].indexOf(props.index) === -1) return
+            loadingState.loading = true
 
             try {
                 const res = await theoDoiMuonSachAPI.getAll(props.index, 1, props.userId)
@@ -28,6 +30,7 @@ export default {
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         const convertDate = (time) => {

@@ -8,6 +8,7 @@ import { theoDoiMuonSachAPI } from "~/services/theoDoiMuonSachAPI"
 import router from "~/router";
 import { useBookStore } from "~/store/bookStore"
 import { useUserStore } from "~/store/userStore"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -19,8 +20,11 @@ export default {
         const endDate = ref(null)
         const MSB = ref(route.query.MSB)
         const data = ref(null)
+        const filteredSlides = ref([])
+        const currentSlide = ref(0);
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 await bookStore.getInformation(MSB.value)
                 data.value = bookStore.book
@@ -30,7 +34,14 @@ export default {
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
+
+        watch(data, (newValue, oldValue) => {
+            if (newValue && newValue !== oldValue) {
+                filteredSlides.value = newValue.hinhAnh;
+            }
+        });
 
         onMounted(async () => {
             await getData()
@@ -67,6 +78,7 @@ export default {
                 return
             }
 
+            loadingState.loading = true
             try {
                 const res = await theoDoiMuonSachAPI.create({
                     MADOCGIA: msg,
@@ -74,18 +86,27 @@ export default {
                     NGAYMUON: start,
                     NGAYTRA: end
                 })
+                loadingState.loading = false
                 alert(res.message)
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
+
+        const slideTo = (index) => {
+            currentSlide.value = index;
+        };
 
         return {
             title,
             data,
             currentDate,
             handleSubmit,
-            endDate
+            endDate,
+            filteredSlides,
+            slideTo,
+            currentSlide
         }
     },
     components: {
@@ -93,15 +114,7 @@ export default {
         Slide,
         Card,
         Title
-    },
-    data: () => ({
-        currentSlide: 0,
-    }),
-    methods: {
-        slideTo(val) {
-            this.currentSlide = val
-        },
-    },
+    }
 }
 </script>
 
@@ -110,9 +123,9 @@ export default {
         <Title :title="title" :sup="data.MANXB?.TENNXB" v-if="title" />
         <div class="detail-content mt-4">
             <div class="row">
-                <div class="col-5" v-if="data.hinhAnh">
+                <div class="col-5" v-if="filteredSlides">
                     <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
-                        <Slide v-for="slide in data.hinhAnh" :key="slide">
+                        <Slide v-for="(slide, index) in filteredSlides" :key="index">
                             <div class="carousel__item">
                                 <img :src="`/src/assets/images/books/${slide?.TENHA}`" :alt="slide?.MAHA"
                                     class="detail-content__img">
@@ -122,8 +135,8 @@ export default {
 
                     <Carousel id="thumbnails" :items-to-show="4" snap-align="start" v-model="currentSlide"
                         ref="carousel">
-                        <Slide v-for="slide in data.hinhAnh" :key="slide">
-                            <div class="carousel__item" @click="slideTo(slide - 1)" style="margin: 0 5px;">
+                        <Slide v-for="(slide, index) in filteredSlides" :key="index">
+                            <div class="carousel__item" @click="slideTo(index)" style="margin: 0 5px;">
                                 <img :src="`/src/assets/images/books/${slide?.TENHA}`" :alt="slide?.MAHA"
                                     class="detail-content__img">
                             </div>

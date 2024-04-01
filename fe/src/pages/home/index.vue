@@ -4,6 +4,7 @@ import CarouselHome from './CarouselHome.vue'
 import Group from '~/components/Group.vue'
 import { onMounted, ref } from 'vue';
 import { useBookStore } from '~/store/bookStore';
+import loadingState from '~/utils/loadingState';
 
 export default {
     components: {
@@ -23,21 +24,25 @@ export default {
         })
 
         const getNewBooks = async () => {
+            loadingState.loading = true
             try {
                 await bookStore.getAll(1)
                 newBooks.value = bookStore.bookAll
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         const getRandomBooks = async () => {
+            loadingState.loading = true
             try {
                 await bookStore.getRandom()
                 randomBooks.value = bookStore.random
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         return {

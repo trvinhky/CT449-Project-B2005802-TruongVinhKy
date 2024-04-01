@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import router from "~/router";
 import { docGiaAPI } from "~/services/docGiaAPI";
+import loadingState from "~/utils/loadingState";
 
 export default {
     setup() {
@@ -33,6 +34,7 @@ export default {
                 return alert('Mật khẩu không khớp nhau!')
             }
 
+            loadingState.loading = true
             try {
                 const { message } = await docGiaAPI.register({
                     HOLOT: HOLOT.value,
@@ -41,11 +43,13 @@ export default {
                     MATKHAU: pass,
                     DIENTHOAI: DIENTHOAI.value
                 })
+                loadingState.loading = false
                 alert(message)
                 router.push('/login')
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         return {

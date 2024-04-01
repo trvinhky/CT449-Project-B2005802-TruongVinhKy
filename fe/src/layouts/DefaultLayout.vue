@@ -1,18 +1,19 @@
 <script>
 import Logo from '../components/Logo.vue'
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import router from '~/router';
 import Loading from '~/components/Loading.vue';
 import { nhaXuatBanAPI } from '~/services/nhaXuatBanAPI';
 import { useUserStore } from '~/store/userStore';
+import loadingState from '~/utils/loadingState'
 
 export default {
   setup() {
     const userStore = useUserStore()
-    const isLoading = ref(false)
     const search = ref('')
     const MADG = ref('')
     const nxb = ref([])
+    const isLoading = ref(loadingState.loading)
 
     const handleSearch = async () => {
       if (router) {
@@ -27,6 +28,10 @@ export default {
         console.log(err)
       }
     }
+
+    watch(() => loadingState.loading, async () => {
+      isLoading.value = loadingState.loading
+    })
 
     onMounted(async () => {
       const MADOCGIA = userStore?.user?.MADOCGIA;

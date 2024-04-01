@@ -5,6 +5,7 @@ import { useRoute } from "vue-router"
 import router from "~/router"
 import { sachAPI } from "~/services/sachAPI"
 import { useBookStore } from "~/store/bookStore"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -17,6 +18,7 @@ export default {
         const count = ref(0)
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 switch (name.value) {
                     case 'new':
@@ -32,12 +34,14 @@ export default {
                         data.value = bookStore.random
                         break
                     default:
+                        loadingState.loading = false
                         router.push('/')
                 }
                 document.title = title.value
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         onMounted(async () => {

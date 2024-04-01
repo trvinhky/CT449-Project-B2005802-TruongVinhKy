@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue"
 import Title from '~/components/Title.vue'
 import { useRoute } from "vue-router"
 import { hinhAnhAPI } from "~/services/hinhAnhAPI"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -14,6 +15,7 @@ export default {
         const MAHA = ref()
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 if (MSB) {
                     data.value = (await hinhAnhAPI.getByBook(MSB.value)).data
@@ -21,6 +23,7 @@ export default {
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         onMounted(async () => {
@@ -29,27 +32,33 @@ export default {
         })
 
         const updateHinhAnh = async () => {
+            loadingState.loading = true
             try {
                 const { message } = await hinhAnhAPI.update(MAHA.value, {
                     TENHA: TENHA.value.trim(),
                     MASACH: MSB.value
                 })
+                loadingState.loading = false
                 alert(message)
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         const createHinhAnh = async () => {
+            loadingState.loading = true
             try {
                 const { message } = await hinhAnhAPI.create({
                     TENHA: TENHA.value.trim(),
                     MASACH: MSB.value
                 })
+                loadingState.loading = false
                 alert(message)
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         const handleClick = async (data = null) => {
@@ -77,9 +86,11 @@ export default {
 
         const handleDelete = async (id) => {
             const check = confirm("Bạn có muốn xóa hình ảnh này")
+            loadingState.loading = true
             if (check) {
                 try {
                     const { message } = await hinhAnhAPI.delete(id)
+                    loadingState.loading = false
                     alert(message)
                     await getData()
                 }
@@ -87,6 +98,7 @@ export default {
                     console.log(err)
                 }
             }
+            loadingState.loading = false
         }
 
         return {

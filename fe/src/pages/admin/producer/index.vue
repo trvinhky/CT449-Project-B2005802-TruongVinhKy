@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue"
 import Title from '~/components/Title.vue'
 import { nhaXuatBanAPI } from "~/services/nhaXuatBanAPI"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -13,11 +14,13 @@ export default {
         const isEdit = ref(false)
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 data.value = (await nhaXuatBanAPI.getAll()).data
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         onMounted(async () => {
@@ -41,6 +44,7 @@ export default {
         }
 
         const handleSubmit = async () => {
+            loadingState.loading = true
             try {
                 let message
 
@@ -57,11 +61,13 @@ export default {
                     })
                     message = res.message
                 }
+                loadingState.loading = false
                 alert(message)
                 await getData()
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         return {

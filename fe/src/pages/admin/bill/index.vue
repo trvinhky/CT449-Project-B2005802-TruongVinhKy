@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 import Title from '~/components/Title.vue'
 import { theoDoiMuonSachAPI } from "~/services/theoDoiMuonSachAPI"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -20,6 +21,7 @@ export default {
         }
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 const res = await theoDoiMuonSachAPI.getAll(status.value, 1)
                 if (res.data) {
@@ -28,6 +30,7 @@ export default {
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         const updateTitle = () => {
@@ -64,6 +67,7 @@ export default {
         const convertState = (state) => state === 1 ? 'Đang mượn' : state === 2 ? 'Đã trả' : 'Chờ duyệt'
 
         const handleCheck = async (MADOCGIA, MASACH, NGAYMUON) => {
+            loadingState.loading = true
             try {
                 if (MADOCGIA || MASACH || NGAYMUON) {
                     let message
@@ -83,6 +87,7 @@ export default {
             } catch (e) {
                 console.log(e)
             }
+            loadingState.loading = false
         }
 
         return {

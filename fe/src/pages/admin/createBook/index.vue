@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue"
 import Title from '~/components/Title.vue'
 import { nhaXuatBanAPI } from "~/services/nhaXuatBanAPI"
 import { sachAPI } from "~/services/sachAPI"
+import loadingState from "~/utils/loadingState"
 
 export default {
     setup() {
@@ -15,12 +16,14 @@ export default {
         const TACGIA = ref()
 
         const getData = async () => {
+            loadingState.loading = true
             try {
                 nxb.value = (await nhaXuatBanAPI.getAll()).data
                 if (nxb.value) MANXB.value = nxb.value[0].MANXB
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         const clearInput = () => {
@@ -42,6 +45,7 @@ export default {
                 return alert('Vui lòng nhập năm xuất bản là số!')
             }
 
+            loadingState.loading = true
             try {
                 const { message } = await sachAPI.create({
                     TENSACH: TENSACH.value,
@@ -52,12 +56,14 @@ export default {
                     MANXB: MANXB.value
                 })
 
+                loadingState.loading = false
                 alert(message)
                 clearInput()
                 await getData()
             } catch (err) {
                 console.log(err)
             }
+            loadingState.loading = false
         }
 
         onMounted(async () => {

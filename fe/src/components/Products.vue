@@ -30,19 +30,7 @@ export default {
             <div class="col-6">
                 <Title :title="title" />
             </div>
-            <div class="col-6">
-                <div class="left">
-                    <div class="products-form">
-                        <button class="products-form__btn">
-                            Sắp xếp:
-                        </button>
-                        <select class="products-form__select">
-                            <option selected value="0">A - Z</option>
-                            <option value="1">Z - A</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+            <div class="col-6"></div>
         </div>
         <p class="products-address" v-if="address">
             <span>Địa chỉ: </span> {{ address }}
