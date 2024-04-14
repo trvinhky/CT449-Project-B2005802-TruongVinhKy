@@ -82,28 +82,37 @@ export default {
 }
 </script>
 <template>
-    <div class="form">
-        <h2 class="form-title">Đăng Nhập</h2>
-        <form @submit.prevent="handleLogin" class="form-content">
-            <div class="form-content__group">
-                <label>SĐT</label>
-                <input type="text" required v-model="SoDienThoai" name="SoDienThoai" />
+    <div class="group">
+        <div class="form">
+            <div class="form-center">
+                <span><i class="fa-solid fa-circle-user"></i></span>
             </div>
-            <div class="form-content__group">
-                <label>Password</label>
-                <div class="form-password">
-                    <input :type="isShow ? 'text' : 'password'" id="password" required v-model="Password">
-                    <span class="form-password__btn" @click="handleToggleShow" v-html="isShow ? eyeIcon : eyeSlashIcon">
-                    </span>
+            <h2 class="form-title">Đăng Nhập</h2>
+            <form @submit.prevent="handleLogin" class="form-content">
+                <div class="form-content__group">
+                    <label>SĐT</label>
+                    <input type="text" required v-model="SoDienThoai" name="SoDienThoai" />
                 </div>
+                <div class="form-content__group">
+                    <label>Password</label>
+                    <div class="form-password">
+                        <input :type="isShow ? 'text' : 'password'" id="password" required v-model="Password">
+                        <span class="form-password__btn" @click="handleToggleShow"
+                            v-html="isShow ? eyeIcon : eyeSlashIcon">
+                        </span>
+                    </div>
+                </div>
+                <div class="form-content__btn">
+                    <button type="submit">
+                        Đăng Nhập
+                    </button>
+                </div>
+            </form>
+            <div class="form-group">
+                <span>Quên mật khẩu?</span>
+                <router-link to="/register" class="form-group__link">Tạo tài khoản</router-link>
             </div>
-            <div class="form-content__btn">
-                <button type="submit">
-                    Đăng Nhập
-                </button>
-            </div>
-        </form>
-        <router-link to="/register" class="form-link">Đăng Ký <i class="fa-solid fa-right-long"></i></router-link>
+        </div>
     </div>
 </template>
 

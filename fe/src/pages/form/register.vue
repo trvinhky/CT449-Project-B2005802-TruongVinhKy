@@ -66,46 +66,55 @@ export default {
 </script>
 
 <template>
-    <div class="form">
-        <h2 class="form-title">Đăng Ký</h2>
-        <form @submit.prevent="handleRegister" class="form-content">
-            <div class="form-content__group">
-                <label>SĐT</label>
-                <input type="text" required v-model="DIENTHOAI" />
+    <div class="group">
+        <div class="form">
+            <div class="form-center">
+                <span><i class="fa-solid fa-circle-user"></i></span>
             </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-content__group">
-                        <label>Họ</label>
-                        <input type="text" required v-model="HOLOT" />
+            <h2 class="form-title">Đăng Ký</h2>
+            <form @submit.prevent="handleRegister" class="form-content">
+                <div class="form-content__group">
+                    <label>SĐT</label>
+                    <input type="text" required v-model="DIENTHOAI" />
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-content__group">
+                            <label>Họ</label>
+                            <input type="text" required v-model="HOLOT" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-content__group">
+                            <label>Tên</label>
+                            <input type="text" required v-model="TEN" />
+                        </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="form-content__group">
-                        <label>Tên</label>
-                        <input type="text" required v-model="TEN" />
-                    </div>
+                <div class="form-content__group">
+                    <label>Địa Chỉ</label>
+                    <input type="text" required v-model="DIACHI" />
                 </div>
+                <div class="form-content__group">
+                    <label>Password</label>
+                    <input type="password" required v-model="MATKHAU" />
+                </div>
+                <div class="form-content__group">
+                    <label>Nhập Lại Password</label>
+                    <input type="password" required v-model="passwordSub" />
+                </div>
+                <div class="form-content__btn">
+                    <button type="submit">
+                        Đăng Ký
+                    </button>
+                </div>
+            </form>
+            <div class="form-group">
+                <span></span>
+                <router-link to="/login" class="form-group__link">Đã có tài khoản</router-link>
             </div>
-            <div class="form-content__group">
-                <label>Địa Chỉ</label>
-                <input type="text" required v-model="DIACHI" />
-            </div>
-            <div class="form-content__group">
-                <label>Password</label>
-                <input type="password" required v-model="MATKHAU" />
-            </div>
-            <div class="form-content__group">
-                <label>Nhập Lại Password</label>
-                <input type="password" required v-model="passwordSub" />
-            </div>
-            <div class="form-content__btn">
-                <button type="submit">
-                    Đăng Ký
-                </button>
-            </div>
-        </form>
-        <router-link to="/login" class="form-link">Đăng Nhập <i class="fa-solid fa-right-long"></i></router-link>
+
+        </div>
     </div>
 </template>
 

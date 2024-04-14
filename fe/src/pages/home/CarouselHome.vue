@@ -62,6 +62,10 @@ export default {
     justify-content: center;
     align-items: center;
 
+    @media (min-width: 770px) and (max-width: 1024px) {
+        height: 30vh;
+    }
+
     img {
         width: 100%;
         height: 100%;

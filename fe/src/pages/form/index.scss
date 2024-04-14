@@ -1,12 +1,40 @@
-.form {
+main {
+    position: relative;
+}
+
+.group {
+    margin-top: 80px;
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid #000;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.form {
+    max-width: 400px;
+    width: 100%;
+    margin-bottom: 20px;
     border-radius: 5px;
-    min-width: 400px;
     padding: 20px;
+    border: 1px solid #333;
+    background-color: #fafafa;
+
+    @media (max-width: 430px) {
+        max-width: 95%;
+    }
+
+    &-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            font-size: 5em;
+        }
+    }
 
     &-title {
         text-align: center;
@@ -46,23 +74,33 @@
             button {
                 padding: 8px 25px;
                 border-radius: 5px;
-                border: 1px solid #000;
-                color: #000;
+                background-color: #3ae374;
                 cursor: pointer;
                 transition: 0.3s;
-                background-color: transparent;
+                border: none;
+                color: #fff;
 
                 &:hover {
-                    background-color: #000;
-                    color: #fff;
+                    opacity: 0.9;
                 }
             }
         }
     }
 
-    &-link {
-        text-decoration: none;
-        color: #3498db;
+    &-group {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        span {
+            cursor: pointer;
+        }
+
+        &__link {
+            text-decoration: none;
+            color: #000;
+        }
     }
 
     &-password {
