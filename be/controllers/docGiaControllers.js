@@ -120,6 +120,9 @@ const docGiaControllers = {
                         DIACHI,
                         NGAYSINH,
                         PHAI
+                    },
+                    $unset: {
+                        MATKHAU: 1
                     }
                 },
                 { new: true }
@@ -169,20 +172,12 @@ const docGiaControllers = {
         try {
 
             // tim kiem theo MADOCGIA
-            const docGia = await docGiaModel.findOne({ MADOCGIA })
+            const docGia = await docGiaModel.findOne({ MADOCGIA }, { MATKHAU: 0 })
 
             if (docGia) {
                 return res.status(201).json({
                     errorCode: 0,
-                    data: {
-                        MADOCGIA: docGia.MADOCGIA,
-                        HOLOT: docGia.HOLOT,
-                        TEN: docGia.TEN,
-                        NGAYSINH: docGia.NGAYSINH,
-                        PHAI: docGia.PHAI,
-                        DIACHI: docGia.DIACHI,
-                        DIENTHOAI: docGia.DIENTHOAI,
-                    },
+                    data: docGia,
                     message: "Lấy thông tin độc giả thành công!"
                 })
             } else {
@@ -229,25 +224,12 @@ const docGiaControllers = {
     getAll: asyncHandler(async (req, res) => {
         try {
             // danh sach doc gia
-            const DSdocGia = await docGiaModel.find()
+            const DSdocGia = await docGiaModel.find({}, { MATKHAU: 0 })
 
             if (DSdocGia) {
-                const results = [];
-                for (const docGia of DSdocGia) {
-                    const kh = {
-                        MADOCGIA: docGia.MADOCGIA,
-                        HOLOT: docGia.HOLOT,
-                        TEN: docGia.TEN,
-                        NGAYSINH: docGia.NGAYSINH,
-                        PHAI: docGia.PHAI,
-                        DIACHI: docGia.DIACHI,
-                        DIENTHOAI: docGia.DIENTHOAI,
-                    }
-                    results.push(kh)
-                }
                 return res.status(201).json({
                     errorCode: 0,
-                    data: results,
+                    data: DSdocGia,
                     message: 'Lấy thông tin tát cả người dùng thành công!'
                 })
             } else {
