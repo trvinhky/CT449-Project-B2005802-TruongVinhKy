@@ -51,8 +51,7 @@ export default {
         return {
             data,
             convertDate,
-            convertState,
-            handleCancel
+            convertState
         }
     }
 }
@@ -76,7 +75,7 @@ export default {
                 <td>{{ convertDate(item.NGAYMUON) }}</td>
                 <td>{{ convertDate(item.NGAYTRA) }}</td>
                 <td>1</td>
-                <td>{{ convertSate(item.TRANGTHAI) }}</td>
+                <td>{{ convertState(item.TRANGTHAI) }}</td>
                 <td>
                     <router-link :to="`/bill?user=${userId}&book=${item.MASACH.MASACH}&date=${item.NGAYMUON}`"
                         class="table-btn">

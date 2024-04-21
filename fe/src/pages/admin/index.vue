@@ -18,11 +18,11 @@ export default {
         const countLoan = ref(0)
 
         const data = {
-            labels: ['Chờ duyệt', 'Quá hạn', 'Đã trả', 'Đang mượn'],
+            labels: ['Chờ duyệt', 'Đã trả', 'Đang mượn'],
             datasets: [
                 {
-                    backgroundColor: ['#00a8ff', '#e84118', '#4cd137', '#f9ca24'],
-                    data: [100, 10, 80, 50]
+                    backgroundColor: ['#00a8ff', '#4cd137', '#f9ca24'],
+                    data: [100, 80, 50]
                 }
             ]
         }

@@ -58,7 +58,7 @@ export default {
             const today = new Date();
             const year = today.getFullYear();
             let month = today.getMonth() + 1;
-            let day = today.getDate();
+            let day = today.getDate() + 1;
 
             month = month < 10 ? '0' + month : month;
             day = day < 10 ? '0' + day : day;
@@ -71,7 +71,10 @@ export default {
             const end = new Date(endDate.value)
             const msg = userStore?.user?.MADOCGIA
 
-            if (start.getTime() > end.getTime()) return
+            if (start.getTime() > end.getTime() || start.getTime() < (new Date().getTime())) {
+                alert('Ngày mượn hoặc trả không hợp lệ!')
+                return
+            }
 
             if (!msg) {
                 router.push('/login')
