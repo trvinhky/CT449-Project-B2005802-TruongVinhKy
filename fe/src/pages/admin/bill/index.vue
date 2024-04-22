@@ -94,7 +94,8 @@ export default {
             data,
             convertDate,
             convertState,
-            handleCheck
+            handleCheck,
+            status
         }
     },
     components: {
@@ -135,8 +136,8 @@ export default {
                             class="table-btn">
                             <i class="fa-solid fa-eye"></i>
                         </router-link>
-                        <button class="table-btn table-btn--add" v-if="isCheck"
-                            @click="() => handleCheck(item?.MADOCGIA?._id, item.MASACH.MASACH, item.NGAYMUON, 1)">
+                        <button class="table-btn table-btn--add" v-if="isCheck || status === 1"
+                            @click="() => handleCheck(item?.MADOCGIA?._id, item.MASACH.MASACH, item.NGAYMUON, status + 1)">
                             <i class="fa-solid fa-check"></i>
                         </button>
                         <button class="table-btn table-btn--delete" v-if="isCheck"

@@ -73,7 +73,7 @@ export default {
                 <th scope="col">Ngày trả</th>
                 <th scope="col">Số lượng</th>
                 <th scope="col">Tình trạng</th>
-                <th scope="col" v-if="isAction"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody v-if="data">
