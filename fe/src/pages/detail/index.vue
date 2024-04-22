@@ -68,12 +68,12 @@ export default {
 
         function daysBetweenDates(date1, date2) {
             // Chuyển đổi chuỗi ngày thành đối tượng Date
-            var d1 = new Date(date1);
-            var d2 = new Date(date2);
+            const d1 = new Date(date1);
+            const d2 = new Date(date2);
 
             // Tính toán số ngày chênh lệch giữa hai ngày
-            var diffTime = Math.abs(d2 - d1);
-            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffTime = Math.abs(d2 - d1);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
             // Kiểm tra xem khoảng cách
             if (diffDays <= 10 && diffDays >= 3) {

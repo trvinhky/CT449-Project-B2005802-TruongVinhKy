@@ -131,7 +131,7 @@ const theoDoiMuonSachControllers = {
                 { new: true }
             )
 
-            if (TRANGTHAI === 2) {
+            if (TRANGTHAI === 2 || TRANGTHAI === -1) {
                 await updateCountBook(res, MASACH, +1)
 
                 if (res.headersSent) {
