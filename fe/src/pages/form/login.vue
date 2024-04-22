@@ -22,7 +22,11 @@ export default {
             try {
                 await userStore.login(pass, phone)
                 loadingState.loading = false
-                router.push('/')
+                if (userStore.user?.MADOCGIA) {
+                    router.push('/')
+                } else {
+                    alert('Đăng nhập thất bại!')
+                }
             } catch (err) {
                 console.log(err)
             }
@@ -34,7 +38,11 @@ export default {
             try {
                 await adminStore.login(pass, phone)
                 loadingState.loading = false
-                router.push('/admin')
+                if (adminStore.admin) {
+                    router.push('/admin')
+                } else {
+                    alert('Đăng nhập thất bại!')
+                }
             } catch (err) {
                 console.log(err)
             }

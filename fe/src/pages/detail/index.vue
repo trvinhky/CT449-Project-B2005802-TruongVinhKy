@@ -66,6 +66,23 @@ export default {
             return `${year}-${month}-${day}`;
         }
 
+        function daysBetweenDates(date1, date2) {
+            // Chuyển đổi chuỗi ngày thành đối tượng Date
+            var d1 = new Date(date1);
+            var d2 = new Date(date2);
+
+            // Tính toán số ngày chênh lệch giữa hai ngày
+            var diffTime = Math.abs(d2 - d1);
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            // Kiểm tra xem khoảng cách là nhỏ hơn hoặc bằng 7 ngày
+            if (diffDays <= 7) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         const handleSubmit = async () => {
             const start = new Date(currentDate.value)
             const end = new Date(endDate.value)
@@ -73,6 +90,11 @@ export default {
 
             if (start.getTime() > end.getTime() || start.getTime() < (new Date().getTime())) {
                 alert('Ngày mượn hoặc trả không hợp lệ!')
+                return
+            }
+
+            if (!daysBetweenDates((currentDate.value, endDate.value))) {
+                alert('Ngày mượn và trả không cách nhau quá 7 ngày!')
                 return
             }
 

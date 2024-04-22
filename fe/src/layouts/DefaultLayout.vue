@@ -99,11 +99,11 @@ export default {
             <div class="offcanvas-body">
               <nav class="list">
                 <router-link to="/" class="list__item">
-                  <i class="fa-solid fa-house"></i>Trang chủ
+                  Trang chủ
                 </router-link>
                 <router-link v-if="nxb" v-for="(el, i) in nxb" :key="el._id" :to="`/authors?nxb=${el.MANXB}`"
                   class="list__item">
-                  <i class="fa-solid fa-bookmark"></i> {{ el.TENNXB }}
+                  {{ el.TENNXB }}
                 </router-link>
               </nav>
             </div>

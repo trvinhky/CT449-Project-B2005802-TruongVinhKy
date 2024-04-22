@@ -1,7 +1,9 @@
 <template>
     <Loading v-if="isLoading" />
-    <header class="container py-2">
-        <Logo />
+    <header style="background-color: #000">
+        <div class="container py-2">
+            <Logo />
+        </div>
     </header>
     <main class="container">
         <router-view />
