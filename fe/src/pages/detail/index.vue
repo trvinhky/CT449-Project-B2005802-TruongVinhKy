@@ -75,8 +75,8 @@ export default {
             var diffTime = Math.abs(d2 - d1);
             var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            // Kiểm tra xem khoảng cách là nhỏ hơn hoặc bằng 7 ngày
-            if (diffDays <= 7) {
+            // Kiểm tra xem khoảng cách
+            if (diffDays <= 10 && diffDays >= 3) {
                 return true;
             } else {
                 return false;
@@ -93,8 +93,8 @@ export default {
                 return
             }
 
-            if (!daysBetweenDates((currentDate.value, endDate.value))) {
-                alert('Ngày mượn và trả không cách nhau quá 7 ngày!')
+            if (!daysBetweenDates(currentDate.value, endDate.value)) {
+                alert('Ngày mượn và trả không cách nhau quá 10 ngày hoặc ít hơn 3 ngày!')
                 return
             }
 
@@ -114,7 +114,7 @@ export default {
                 loadingState.loading = false
                 alert(res.message)
             } catch (e) {
-                console.log(e)
+                alert('Đăng ký mượn sách thất bại!')
             }
             loadingState.loading = false
         }

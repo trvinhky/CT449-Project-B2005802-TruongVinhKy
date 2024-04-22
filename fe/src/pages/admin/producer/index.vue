@@ -65,7 +65,7 @@ export default {
                 alert(message)
                 await getData()
             } catch (err) {
-                console.log(err)
+                alert(title.value + ' thất bại!')
             }
             loadingState.loading = false
         }

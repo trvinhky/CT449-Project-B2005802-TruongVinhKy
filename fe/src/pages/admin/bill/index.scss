@@ -25,6 +25,10 @@
         &--edit {
             background-color: #fbc531;
         }
+
+        &--delete {
+            background-color: #c0392b;
+        }
     }
 
     :not(.table-btn:first-child, i) {
@@ -47,21 +51,6 @@
 }
 
 .admin {
-    &-info {
-        @extend .center;
-        justify-content: space-between;
-
-        p {
-            margin-bottom: 10px;
-            font-size: 16px;
-            color: dimgray;
-
-            span {
-                font-weight: 600;
-                color: #000;
-            }
-        }
-    }
 
     &-dots {
         @extend .center;

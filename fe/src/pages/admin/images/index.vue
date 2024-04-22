@@ -41,7 +41,7 @@ export default {
                 loadingState.loading = false
                 alert(message)
             } catch (err) {
-                console.log(err)
+                alert('Cập nhật thất bại!')
             }
             loadingState.loading = false
         }
@@ -56,7 +56,7 @@ export default {
                 loadingState.loading = false
                 alert(message)
             } catch (err) {
-                console.log(err)
+                alert('Thêm hình ảnh thất bại!')
             }
             loadingState.loading = false
         }
@@ -95,7 +95,7 @@ export default {
                     await getData()
                 }
                 catch (err) {
-                    console.log(err)
+                    alert('Xóa hình ảnh thất bại!')
                 }
             }
             loadingState.loading = false

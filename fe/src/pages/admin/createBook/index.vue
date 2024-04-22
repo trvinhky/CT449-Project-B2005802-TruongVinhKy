@@ -61,7 +61,7 @@ export default {
                 clearInput()
                 await getData()
             } catch (err) {
-                console.log(err)
+                alert('Thêm sách mới thất bại!')
             }
             loadingState.loading = false
         }

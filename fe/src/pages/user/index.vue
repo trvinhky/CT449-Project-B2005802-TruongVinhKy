@@ -76,7 +76,7 @@ export default {
                     route.push('/')
                 }
             } catch (err) {
-                console.log(err)
+                alert('Cập nhật thất bại!')
             }
         }
 
@@ -196,6 +196,9 @@ export default {
                 </li>
                 <li :class="{ 'active': changeTab === 2 }" @click="handleChangeTab(2)">
                     Lịch sử
+                </li>
+                <li :class="{ 'active': changeTab === 3 }" @click="handleChangeTab(3)">
+                    Bị hủy
                 </li>
             </ul>
             <div class="user-tab__content">

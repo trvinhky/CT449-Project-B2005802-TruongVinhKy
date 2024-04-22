@@ -102,7 +102,7 @@ const docGiaControllers = {
         const checkRole = (data) => !isNaN(parseInt(data)) && [0, 1, 2].indexOf(data) !== -1
 
         // kiem tra cac truong
-        if (!HOLOT || !TEN || !DIACHI || !NGAYSINH || !MADOCGIA || !checkRole(PHAI)) {
+        if (!HOLOT || !TEN || !DIACHI || !NGAYSINH || !MADOCGIA || !checkRole(+PHAI)) {
             return res.status(400).json({
                 errorCode: 1,
                 message: "Tất cả các trường là bắt buộc!"

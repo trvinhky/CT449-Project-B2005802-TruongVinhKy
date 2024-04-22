@@ -35,6 +35,9 @@ const updateCountBook = async (res, MASACH, number) => {
     }
 }
 
+// kiem tra trang thai
+const checkStatus = (data) => !isNaN(parseInt(data)) && [-1, 0, 1, 2].indexOf(data) !== -1
+
 const theoDoiMuonSachControllers = {
     // tao the muon
     create: asyncHandler(async (req, res) => {
@@ -57,6 +60,20 @@ const theoDoiMuonSachControllers = {
         }
 
         try {
+            // tim kiem ton tai
+            const check = await theoDoiMuonSachModel.findOne({
+                MADOCGIA,
+                MASACH,
+                NGAYMUON
+            })
+
+            if (check) {
+                return res.status(400).json({
+                    errorCode: 1,
+                    message: "Thêm mới thẻ mượn thất bại!"
+                })
+            }
+
             // them moi the muon
             const theoDoiMuonSach = await theoDoiMuonSachModel.create({
                 MADOCGIA,
@@ -95,7 +112,7 @@ const theoDoiMuonSachControllers = {
         const { TRANGTHAI } = req.body
 
         // kiem tra cac truong
-        if (!MADOCGIA || !MASACH || !NGAYMUON || !TRANGTHAI) {
+        if (!MADOCGIA || !MASACH || !NGAYMUON || !checkStatus(+TRANGTHAI)) {
             return res.status(400).json({
                 errorCode: 1,
                 message: 'Tất cả các trường là bắt buộc!'
@@ -154,7 +171,7 @@ const theoDoiMuonSachControllers = {
         try {
             // lay tat phieu muon
             let search = {}
-            if (status || +status === 0) {
+            if (checkStatus(+status)) {
                 search = { TRANGTHAI: +status }
             }
 

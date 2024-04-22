@@ -86,7 +86,7 @@ export default {
                         <i class="fa-solid fa-users-gear"></i> Nhân viên
                     </router-link>
                     <router-link to="/admin/account?name=user" class="admin-bottom__link">
-                        <i class="fa-solid fa-users"></i> Đọc giả
+                        <i class="fa-solid fa-users"></i> Độc giả
                     </router-link>
                     <h4 class="admin-bottom__title mt-3">
                         Sản phẩm
@@ -114,6 +114,9 @@ export default {
                     </router-link>
                     <router-link to="/admin/bills?action=histories" class="admin-bottom__link">
                         <i class="fa-solid fa-book-bookmark"></i> Lịch sử
+                    </router-link>
+                    <router-link to="/admin/bills?action=cancels" class="admin-bottom__link">
+                        <i class="fa-solid fa-ban"></i> Đã hủy
                     </router-link>
                 </nav>
             </div>

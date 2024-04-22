@@ -25,7 +25,7 @@ const theoDoiMuonSachSchema = mongoose.Schema(
         },
         TRANGTHAI: {
             type: Number,
-            enum: [0, 1, 2],
+            enum: [-1, 0, 1, 2],
             default: 0
         }
     }

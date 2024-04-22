@@ -28,7 +28,7 @@ export default {
                     alert('Đăng nhập thất bại!')
                 }
             } catch (err) {
-                console.log(err)
+                alert('Đăng nhập thất bại!')
             }
             loadingState.loading = false
         }
@@ -44,7 +44,7 @@ export default {
                     alert('Đăng nhập thất bại!')
                 }
             } catch (err) {
-                console.log(err)
+                alert('Đăng nhập thất bại!')
             }
             loadingState.loading = false
         }

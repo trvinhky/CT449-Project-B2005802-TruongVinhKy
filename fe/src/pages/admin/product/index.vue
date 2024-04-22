@@ -117,7 +117,7 @@ export default {
                 loadingState.loading = false
                 alert(message)
             } catch (err) {
-                console.log(err)
+                alert('Cập nhật thông tin sách thất bại!')
             }
             loadingState.loading = false
         }

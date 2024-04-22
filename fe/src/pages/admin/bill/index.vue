@@ -35,11 +35,14 @@ export default {
 
         const updateTitle = () => {
             if (checkPath('pending')) {
-                changeValue(true, ' đang mượn')
+                changeValue(false, ' đang mượn')
                 status.value = 1
             } else if (checkPath('histories')) {
                 changeValue(false, ' đã trả')
                 status.value = 2
+            } else if (checkPath('cancels')) {
+                changeValue(false, ' đã hủy')
+                status.value = -1
             } else {
                 status.value = 0
                 changeValue(true)
@@ -64,24 +67,19 @@ export default {
             return date.toISOString().split('T')[0];
         }
 
-        const convertState = (state) => state === 1 ? 'Đang mượn' : state === 2 ? 'Đã trả' : 'Chờ duyệt'
+        const convertState = (state) => {
+            if (state === 1) return 'Đang mượn'
+            else if (state === 2) return 'Đã trả'
+            else if (state === -1) return 'Đã hủy'
+            else return 'Chờ duyệt'
+        }
 
-        const handleCheck = async (MADOCGIA, MASACH, NGAYMUON) => {
+        const handleCheck = async (MADOCGIA, MASACH, NGAYMUON, TRANGTHAI) => {
             loadingState.loading = true
             try {
                 if (MADOCGIA || MASACH || NGAYMUON) {
-                    let message
-                    if (status.value === 0) {
-                        const res = await theoDoiMuonSachAPI.update(MADOCGIA, MASACH, NGAYMUON, 1)
-                        message = res.message
-                    }
-
-                    if (status.value === 1) {
-                        const res = await theoDoiMuonSachAPI.update(MADOCGIA, MASACH, NGAYMUON, 2)
-                        message = res.message
-                    }
-
-                    alert(message)
+                    const res = await theoDoiMuonSachAPI.update(MADOCGIA, MASACH, NGAYMUON, TRANGTHAI)
+                    alert(res.message)
                     await getData()
                 }
             } catch (e) {
@@ -107,14 +105,6 @@ export default {
 <template>
     <section class="admin">
         <Title :title="title" root="Admin" />
-        <div class="admin-info">
-            <p class="admin-info__number">
-                <span>Số phiếu mượn:</span> 1
-            </p>
-            <p class="admin-info__number">
-                <span>Tổng giá trị:</span> 1.850.000₫
-            </p>
-        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -146,8 +136,12 @@ export default {
                             <i class="fa-solid fa-eye"></i>
                         </router-link>
                         <button class="table-btn table-btn--add" v-if="isCheck"
-                            @click="() => handleCheck(item?.MADOCGIA?._id, item.MASACH.MASACH, item.NGAYMUON)">
+                            @click="() => handleCheck(item?.MADOCGIA?._id, item.MASACH.MASACH, item.NGAYMUON, 1)">
                             <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button class="table-btn table-btn--delete" v-if="isCheck"
+                            @click="() => handleCheck(item?.MADOCGIA?._id, item.MASACH.MASACH, item.NGAYMUON, -1)">
+                            <i class="fa-solid fa-ban"></i>
                         </button>
                     </td>
                 </tr>

@@ -19,11 +19,13 @@ export default {
         const data = ref([])
 
         const getData = async () => {
-            if (!props.userId || [0, 1, 2].indexOf(props.index) === -1) return
+            if (!props.userId || [0, 1, 2, 3].indexOf(props.index) === -1) return
             loadingState.loading = true
 
+            const status = props.index === 3 ? -1 : props.index
+
             try {
-                const res = await theoDoiMuonSachAPI.getAll(props.index, 1, props.userId)
+                const res = await theoDoiMuonSachAPI.getAll(status, 1, props.userId)
                 if (res.data) {
                     data.value = res.data
                 }
@@ -38,7 +40,12 @@ export default {
             return date.toISOString().split('T')[0];
         }
 
-        const convertState = (state) => state === 1 ? 'Đang mượn' : state === 2 ? 'Đã trả' : 'Chờ duyệt'
+        const convertState = (state) => {
+            if (state === 1) return 'Đang mượn'
+            else if (state === 2) return 'Đã trả'
+            else if (state === -1) return 'Đã hủy'
+            else return 'Chờ duyệt'
+        }
 
         onMounted(async () => {
             await getData()

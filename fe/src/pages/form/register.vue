@@ -47,7 +47,7 @@ export default {
                 alert(message)
                 router.push('/login')
             } catch (err) {
-                console.log(err)
+                alert('Đăng ký tài khoản thất bại!')
             }
             loadingState.loading = false
         }
